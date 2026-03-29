@@ -152,147 +152,81 @@ window.nextPage = function () { if (currentPage < totalPages) { currentPage++; u
 
 
 async function loadChart() {
-    try {
-        const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
-        const result = await response.json();
-        const rawData = result.data;
+  try {
+    const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
+    const result = await response.json();
+    const rawData = result.data;
 
-        // ================================================================
-        //  FILTER: Ambil hanya faskes Amityville
-        //  Nama harus PERSIS sama dengan yang ada di API (huruf besar semua)
-        // ================================================================
-        // const amityvilleData = rawData.filter(item =>
-        //   item.city === 'BRUNSWICK HOSPITAL CENTER, INC.' ||
-        //   item.city === 'SOUTH OAKS HOSP'
-        // );
+    // Baca nama faskes dari atribut di <body data-facilities="...">
+    const facilityNames = document.body.dataset.facilities.split('|');
 
-        const facilityNames = document.body.dataset.facilities.split('|');
+    // Filter data sesuai faskes yang ada di halaman ini
+    const cityData = rawData.filter(item =>
+      facilityNames.some(name => item.city.includes(name))
+    );
 
-        const cityData = rawData.filter(item =>
-            facilityNames.some(name => item.city.includes(name))
-        );
-        console.log('Amityville data:', amityvilleData); // cek di Console
+    console.log('City data:', cityData); // cek di Console, harus muncul 2 faskes
 
-        // Kalau tidak ketemu, fallback ke semua data (untuk debugging)
-        const baseData = amityvilleData.length > 0 ? amityvilleData : rawData;
+    // Kalau tidak ketemu, fallback ke semua data
+    const baseData = cityData.length > 0 ? cityData : rawData;
+    //                ^^^^^^^^^ nama variabel sudah konsisten
 
-        // ================================================================
-        //  FUNGSI HELPER: Buat 1 chart
-        //  canvasId  = id elemen <canvas> di HTML
-        //  data      = array data yang sudah difilter
-        //  kpiKey    = nama field di API ('SMD', 'FAPH', 'MedCont', 'READM')
-        //  label     = teks label di legenda chart
-        //  benchmark = nilai garis putus-putus benchmark
-        //  higherIsBetter = true jika nilai tinggi = bagus (SMD, FAPH, MedCont)
-        //                   false jika nilai rendah = bagus (READM)
-        // ================================================================
-        function buatChart(canvasId, data, kpiKey, label, benchmark, higherIsBetter) {
-            const canvas = document.getElementById(canvasId);
-            if (!canvas) return; // skip kalau canvas tidak ada di halaman ini
+    function buatChart(canvasId, data, kpiKey, label) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
 
-            const labels = data.map(item => item.city);
-            const values = data.map(item => item[kpiKey]);
+      const labels = data.map(item => item.city);
+      const values = data.map(item => item[kpiKey]);
 
-            new Chart(canvas, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-
-                        {
-                            // Bar chart KPI
-                            type: 'bar',
-                            label: label,
-                            data: values,
-                            backgroundColor: values.map(v => {
-                                const bagus = higherIsBetter ? v >= benchmark : v <= benchmark;
-                                return bagus
-                                    ? 'rgba(108, 39, 217, 0.85)'  // ungu solid = bagus
-                                    : 'rgba(108, 39, 217, 0.35)';  // ungu pudar = perlu perhatian
-                            }),
-                            borderRadius: 4,
-                            order: 2
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: { boxWidth: 15, padding: 15, font: { size: 12 } }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: (ctx) => {
-                                    if (ctx.datasetIndex === 0) return null;
-                                    return ` ${label}: ${ctx.raw}%`;
-                                },
-                                afterLabel: (ctx) => {
-                                    if (ctx.datasetIndex === 0) return null;
-                                    const diff = (ctx.raw - benchmark).toFixed(1);
-                                    const sign = diff > 0 ? '+' : '';
-                                    return ` vs Benchmark: ${sign}${diff}%`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                maxRotation: 20,
-                                minRotation: 0,
-                                font: { size: 11 }
-                            },
-                            grid: { display: false }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Percentage (%)',
-                                font: { size: 12 }
-                            },
-                            ticks: {
-                                callback: v => v + '%',
-                                font: { size: 11 }
-                            },
-                            grid: { color: 'rgba(0,0,0,0.05)' }
-                        }
-                    }
-                }
-            });
+      new Chart(canvas, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: label,
+            data: values,
+            backgroundColor: 'rgba(108, 39, 217, 0.85)',
+            borderRadius: 4,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ` ${label}: ${ctx.raw}%`
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { maxRotation: 20, minRotation: 0, font: { size: 11 } },
+              grid: { display: false }
+            },
+            y: {
+              title: { display: true, text: 'Percentage (%)', font: { size: 12 } },
+              ticks: { callback: v => v + '%', font: { size: 11 } },
+              grid: { color: 'rgba(0,0,0,0.05)' }
+            }
+          }
         }
-
-        // ================================================================
-        //  RENDER 4 CHART
-        //  Filter nilai 0 untuk KPI yang datanya tidak tersedia
-        // ================================================================
-
-        // SMD — tampilkan semua (SMD selalu punya data)
-        const smdData = baseData;
-        buatChart('smd-chart', smdData, 'SMD', 'SMD Rate', 82.73, true);
-
-        // FAPH — filter faskes yang tidak punya data (nilai 0)
-        const faphData = baseData.filter(item => item.FAPH > 0);
-        buatChart('faph-chart', faphData, 'FAPH', 'FAPH-30 Rate', 60.07, true);
-
-        // MedCont — filter faskes yang tidak punya data
-        const medcontData = baseData.filter(item => item.MedCont > 0);
-        buatChart('medcont-chart', medcontData, 'MedCont', 'MedCont Rate', 77.30, true);
-
-        // READM — filter faskes yang tidak punya data
-        // higherIsBetter = false karena nilai READM rendah = lebih baik
-        const readmData = baseData.filter(item => item.READM > 0);
-        buatChart('readm-chart', readmData, 'READM', 'Readmission Rate', 18.5, false);
-
-    } catch (error) {
-        console.error('Error ambil data:', error);
-        // Tampilkan pesan error di semua chart wrapper
-        document.querySelectorAll('.chart-wrapper').forEach(el => {
-            el.innerHTML = '<p style="color:red; text-align:center; padding:2rem">Gagal memuat data. Cek koneksi atau CORS.</p>';
-        });
+      });
     }
+
+    // Render 4 chart
+    buatChart('smd-chart',     baseData,                              'SMD',     'SMD Rate');
+    buatChart('faph-chart',    baseData.filter(i => i.FAPH > 0),     'FAPH',    'FAPH-30 Rate');
+    buatChart('medcont-chart', baseData.filter(i => i.MedCont > 0),  'MedCont', 'MedCont Rate');
+    buatChart('readm-chart',   baseData.filter(i => i.READM > 0),    'READM',   'Readmission Rate');
+
+  } catch (error) {
+    console.error('Error:', error);
+    document.querySelectorAll('.chart-wrapper').forEach(el => {
+      el.innerHTML = '<p style="color:red;text-align:center;padding:2rem">Gagal memuat data.</p>';
+    });
+  }
 }
 
 loadChart();
