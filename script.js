@@ -184,97 +184,151 @@ window.nextPage = function () { if (currentPage < totalPages) { currentPage++; u
 // loadChart();
 
 async function loadChart() {
-    try {
-        const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
-        const result = await response.json();
-        const rawData = result.data; // ambil dari dalam { success: true, data: [...] }
+  try {
+    const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
+    const result = await response.json();
+    const rawData = result.data;
 
-        // Urutkan ascending berdasarkan READM (nilai kecil = lebih baik)
-        rawData.sort((a, b) => a.READM - b.READM);
+    // ================================================================
+    //  FILTER: Ambil hanya faskes Amityville
+    //  Nama harus PERSIS sama dengan yang ada di API (huruf besar semua)
+    // ================================================================
+    const amityvilleData = rawData.filter(item =>
+      item.city === 'BRUNSWICK HOSPITAL CENTER, INC.' ||
+      item.city === 'SOUTH OAKS HOSP'
+    );
 
-        const labels = rawData.map(item => item.city);   // nama faskes
-        const data   = rawData.map(item => item.READM);  // nilai KPI
-        const BENCHMARK = 18.5;
+    // Kalau tidak ketemu, fallback ke semua data (untuk debugging)
+    const baseData = amityvilleData.length > 0 ? amityvilleData : rawData;
 
-        const ctx = document.getElementById('smd-chart'); // sesuai id di HTML kamu
-        // PENTING: id di sini harus sama persis dengan id="smd-chart" di HTML
+    // ================================================================
+    //  FUNGSI HELPER: Buat 1 chart
+    //  canvasId  = id elemen <canvas> di HTML
+    //  data      = array data yang sudah difilter
+    //  kpiKey    = nama field di API ('SMD', 'FAPH', 'MedCont', 'READM')
+    //  label     = teks label di legenda chart
+    //  benchmark = nilai garis putus-putus benchmark
+    //  higherIsBetter = true jika nilai tinggi = bagus (SMD, FAPH, MedCont)
+    //                   false jika nilai rendah = bagus (READM)
+    // ================================================================
+    function buatChart(canvasId, data, kpiKey, label, benchmark, higherIsBetter) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return; // skip kalau canvas tidak ada di halaman ini
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        // Dataset 1: Garis benchmark
-                        type: 'line',
-                        label: 'NY State Benchmark',
-                        data: new Array(labels.length).fill(BENCHMARK),
-                        borderColor: '#FF6B6B',
-                        borderWidth: 3,
-                        borderDash: [8, 6],
-                        fill: false,
-                        pointRadius: 0,
-                        order: 1
-                    },
-                    {
-                        // Dataset 2: Bar chart
-                        type: 'bar',
-                        label: '30-Day Readmission Rate',
-                        data: data,
-                        backgroundColor: data.map(v =>
-                            v < BENCHMARK
-                                ? 'rgba(108, 39, 217, 0.85)'  // ungu solid = bagus
-                                : 'rgba(108, 39, 217, 0.35)'  // ungu pudar = perlu perhatian
-                        ),
-                        borderRadius: 4,
-                        order: 2
-                    }
-                ]
+      const labels = data.map(item => item.city);
+      const values = data.map(item => item[kpiKey]);
+
+      new Chart(canvas, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              // Garis benchmark putus-putus
+              type: 'line',
+              label: 'NY State Benchmark',
+              data: new Array(labels.length).fill(benchmark),
+              borderColor: '#FF6B6B',
+              borderWidth: 2,
+              borderDash: [8, 6],
+              pointRadius: 0,
+              fill: false,
+              order: 1
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: { boxWidth: 15, padding: 15 }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: (ctx) => {
-                                if (ctx.datasetIndex === 0) return null; // sembunyikan tooltip benchmark
-                                return ` READM: ${ctx.raw}%`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: {
-                            maxRotation: 45,
-                            minRotation: 45,
-                            font: { size: 10 }
-                        },
-                        grid: { display: false }
-                    },
-                    y: {
-                        title: { display: true, text: 'Percentage (%)', font: { size: 12 } },
-                        ticks: {
-                            callback: v => v + '%',
-                            font: { size: 11 }
-                        },
-                        grid: { color: 'rgba(0,0,0,0.05)' }
-                    }
-                }
+            {
+              // Bar chart KPI
+              type: 'bar',
+              label: label,
+              data: values,
+              backgroundColor: values.map(v => {
+                const bagus = higherIsBetter ? v >= benchmark : v <= benchmark;
+                return bagus
+                  ? 'rgba(108, 39, 217, 0.85)'  // ungu solid = bagus
+                  : 'rgba(108, 39, 217, 0.35)';  // ungu pudar = perlu perhatian
+              }),
+              borderRadius: 4,
+              order: 2
             }
-        });
-
-    } catch (error) {
-        console.error('Error ambil data:', error);
-        // Kalau error, tampilkan pesan di canvas area
-        document.querySelector('.chart-wrapper').innerHTML =
-            '<p style="color:red;text-align:center">Gagal memuat data. Cek koneksi atau CORS.</p>';
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { boxWidth: 15, padding: 15, font: { size: 12 } }
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  if (ctx.datasetIndex === 0) return null;
+                  return ` ${label}: ${ctx.raw}%`;
+                },
+                afterLabel: (ctx) => {
+                  if (ctx.datasetIndex === 0) return null;
+                  const diff = (ctx.raw - benchmark).toFixed(1);
+                  const sign = diff > 0 ? '+' : '';
+                  return ` vs Benchmark: ${sign}${diff}%`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                maxRotation: 20,
+                minRotation: 0,
+                font: { size: 11 }
+              },
+              grid: { display: false }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Percentage (%)',
+                font: { size: 12 }
+              },
+              ticks: {
+                callback: v => v + '%',
+                font: { size: 11 }
+              },
+              grid: { color: 'rgba(0,0,0,0.05)' }
+            }
+          }
+        }
+      });
     }
+
+    // ================================================================
+    //  RENDER 4 CHART
+    //  Filter nilai 0 untuk KPI yang datanya tidak tersedia
+    // ================================================================
+
+    // SMD — tampilkan semua (SMD selalu punya data)
+    const smdData = baseData;
+    buatChart('smd-chart', smdData, 'SMD', 'SMD Rate', 82.73, true);
+
+    // FAPH — filter faskes yang tidak punya data (nilai 0)
+    const faphData = baseData.filter(item => item.FAPH > 0);
+    buatChart('faph-chart', faphData, 'FAPH', 'FAPH-30 Rate', 60.07, true);
+
+    // MedCont — filter faskes yang tidak punya data
+    const medcontData = baseData.filter(item => item.MedCont > 0);
+    buatChart('medcont-chart', medcontData, 'MedCont', 'MedCont Rate', 77.30, true);
+
+    // READM — filter faskes yang tidak punya data
+    // higherIsBetter = false karena nilai READM rendah = lebih baik
+    const readmData = baseData.filter(item => item.READM > 0);
+    buatChart('readm-chart', readmData, 'READM', 'Readmission Rate', 18.5, false);
+
+  } catch (error) {
+    console.error('Error ambil data:', error);
+    // Tampilkan pesan error di semua chart wrapper
+    document.querySelectorAll('.chart-wrapper').forEach(el => {
+      el.innerHTML = '<p style="color:red; text-align:center; padding:2rem">Gagal memuat data. Cek koneksi atau CORS.</p>';
+    });
+  }
 }
 
 loadChart();
