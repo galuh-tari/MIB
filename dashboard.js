@@ -292,7 +292,7 @@ const healthcareFacilities = [
   { name: "PILGRIM PSYCHIATRIC CENTER", city: "WEST BRENTWOOD", address: "WEST BRENTWOOD, NY", website: "https://omh.ny.gov/omhweb/facilities/pgpc/", image: "pilgrim.jfif" },
   
   // WEST SENECA
-  { name: "WESTERN NY CHILDRENS PSYCHIATRIC CENTER", city: "WEST SENECA", address: "WEST SENECA, NY", website: "https://omh.ny.gov/omhweb/facilities/wcpc/", image: "western.jfif" },
+  { name: "WESTERN NY CHILDRENS PSYCHIATRIC CENTER", city: "WEST SENECA", address: "WEST SENECA, NY", website: "https://omh.ny.gov/omhweb/facilities/wcpc/", image: "wnyc.jfif" },
   
   // YONKERS
   { name: "ST JOSEPH'S MEDICAL CENTER", city: "YONKERS", address: "YONKERS, NY", website: "https://www.saintjosephs.org/", image: "yonkers.jfif" }
