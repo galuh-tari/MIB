@@ -272,9 +272,6 @@ async function loadChart() {
                                         ? `${label}: N/A`
                                         : `${label}: ${ctx.raw}%`
                             }
-                            // callbacks: {
-                            //     label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw}%`
-                            // }
                         }
                     },
                     scales: {
