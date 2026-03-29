@@ -176,45 +176,6 @@ async function loadChart() {
             const labels = data.map(item => item.city);
             const values = data.map(item => item[kpiKey] === 0 ? null : item[kpiKey]);
 
-            // new Chart(canvas, {
-            //     type: 'bar',
-            //     data: {
-            //         labels: labels,
-            //         datasets: [{
-            //             label: label,
-            //             data: values,
-            //             backgroundColor: 'rgba(108, 39, 217, 0.85)',
-            //             borderRadius: 4,
-            //         }]
-            //     },
-            //     options: {
-            //         responsive: true,
-            //         maintainAspectRatio: false,
-            //         plugins: {
-            //             legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
-            //             tooltip: {
-            //                 callbacks: {
-            //                     label: (ctx) =>
-            //                         ctx.raw == null
-            //                             ? `${label}: N/A`
-            //                             : `${label}: ${ctx.raw}%`
-            //                 }
-            //             }
-            //         },
-            //         scales: {
-            //             x: {
-            //                 ticks: { maxRotation: 20, minRotation: 0, font: { size: 11 } },
-            //                 grid: { display: false }
-            //             },
-            //             y: {
-            //                 title: { display: true, text: 'Percentage (%)', font: { size: 12 } },
-            //                 ticks: { callback: v => v + '%', font: { size: 11 } },
-            //                 grid: { color: 'rgba(0,0,0,0.05)' }
-            //             }
-            //         }
-            //     },
-
-            // });
             new Chart(canvas, {
                 type: 'bar',
                 data: {
@@ -278,7 +239,7 @@ async function loadChart() {
 
         // Render 4 chart
         buatChart('smd-chart', baseData, 'SMD', 'SMD Rate');
-        const faphData = cleanedData.filter(i => i.FAPH30 > -1 || i.FAPH7 > -1);
+        const faphData = cleanedData;
         const faphCanvas = document.getElementById('faph-chart');
         if (faphCanvas) {
             new Chart(faphCanvas, {
@@ -353,8 +314,8 @@ async function loadChart() {
                     }]
             });
         }
-        buatChart('medcont-chart', baseData.filter(i => i.MedCont > 0), 'MedCont', 'MedCont Rate');
-        buatChart('readm-chart', baseData.filter(i => i.READM > 0), 'READM', 'Readmission Rate');
+        buatChart('medcont-chart', baseData, 'MedCont', 'MedCont Rate');
+        buatChart('readm-chart', baseData, 'READM', 'Readmission Rate');
 
     } catch (error) {
         console.error('Error:', error);
