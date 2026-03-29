@@ -150,7 +150,13 @@ window.nextPage = function () { if (currentPage < totalPages) { currentPage++; u
 
 async function loadChart() {
     try {
-        const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
+        const response = await fetch("https://newyorkipfqr.azurewebsites.net/api/kpi/all", {
+            headers: {
+                "X-API-KEY": "PASSWORDAPI", // Harus sama dengan di myapi.py
+                "Content-Type": "application/json"
+            }
+        });
+        // const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
         const result = await response.json();
         const rawData = result.data;
 
