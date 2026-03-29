@@ -197,6 +197,7 @@ async function loadChart() {
       item.city === 'BRUNSWICK HOSPITAL CENTER, INC.' ||
       item.city === 'SOUTH OAKS HOSP'
     );
+    console.log('Amityville data:', amityvilleData); // cek di Console
 
     // Kalau tidak ketemu, fallback ke semua data (untuk debugging)
     const baseData = amityvilleData.length > 0 ? amityvilleData : rawData;
