@@ -301,20 +301,21 @@ const healthcareFacilities = [
 // ===== MOCK DATA KPI (Sementara) =====
 const kpiData = {
   SMD: Array.from({length: 57}, () => (Math.random() * 20 + 5).toFixed(1)),
-  FAPH: Array.from({length: 57}, () => (Math.random() * 25 + 10).toFixed(1)),
+  FAPH30: Array.from({length: 57}, () => (Math.random() * 25 + 10).toFixed(1)),
+  FAPH7: Array.from({length: 57}, () => (Math.random() * 20 + 8).toFixed(1)),
   MedCont: Array.from({length: 57}, () => (Math.random() * 30 + 15).toFixed(1)),
   READM: Array.from({length: 57}, () => (Math.random() * 15 + 8).toFixed(1))
 };
 
-const nyAverages = { SMD: 12.8, FAPH: 18.5, MedCont: 24.2, READM: 13.5 };
+const nyAverages = { SMD: 12.8, FAPH30: 18.5, FAPH7: 14.2, MedCont: 24.2, READM: 13.5 };
 
 function getDataForKPI(kpi) {
-  if (kpi === 'ALL') return allCityNames.map((_, idx) => ((parseFloat(kpiData.SMD[idx]) + parseFloat(kpiData.FAPH[idx]) + parseFloat(kpiData.MedCont[idx]) + parseFloat(kpiData.READM[idx])) / 4).toFixed(1));
+  if (kpi === 'ALL') return allCityNames.map((_, idx) => ((parseFloat(kpiData.SMD[idx]) + parseFloat(kpiData.FAPH30[idx]) + parseFloat(kpiData.FAPH7[idx]) + parseFloat(kpiData.MedCont[idx]) + parseFloat(kpiData.READM[idx])) / 5).toFixed(1));
   return kpiData[kpi];
 }
 
 function getNYAvgValue(kpi) {
-  if (kpi === 'ALL') return ((nyAverages.SMD + nyAverages.FAPH + nyAverages.MedCont + nyAverages.READM) / 4).toFixed(1);
+  if (kpi === 'ALL') return ((nyAverages.SMD + nyAverages.FAPH30 + nyAverages.FAPH7 + nyAverages.MedCont + nyAverages.READM) / 5).toFixed(1);
   return nyAverages[kpi];
 }
 
@@ -514,7 +515,6 @@ function renderHealthcareGrid() {
   
   const container = document.getElementById('healthcareGrid');
   container.innerHTML = pageFacilities.map(facility => {
-    // Cek apakah ada gambar
     const hasImage = facility.image && facility.image !== '' && facility.image !== '.jfif';
     const imagePath = `asset/${facility.image}`;
     
