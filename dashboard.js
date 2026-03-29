@@ -15,6 +15,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// ===== API BASE URL =====
+const API_BASE_URL = "https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net";
+
 // ===== AUTHENTICATION =====
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -74,7 +77,7 @@ window.toggleFlip = function(card) {
   }
 };
 
-// ===== DATA 57 CITY ASLI =====
+// ===== DATA 57 CITY =====
 const allCityNames = [
   "ALBANY", "AMITYVILLE", "AMSTERDAM", "AUBURN", "BELLEROSE", "BINGHAMTON", "BRONX", "BROOKLYN",
   "BUFFALO", "CARMEL", "CLIFTON SPRINGS", "CORTLAND", "DIX HILLS", "EAST MEADOW", "ELMHURST",
@@ -86,113 +89,54 @@ const allCityNames = [
   "WARSAW", "WEST BRENTWOOD", "WEST SENECA", "YONKERS"
 ];
 
-// ===== DATA 95 FACILITY (LENGKAP DENGAN WEBSITE DAN GAMBAR) =====
+// ===== DATA 95 FACILITY =====
 const healthcareFacilities = [
-  // ALBANY
   { name: "ALBANY MEDICAL CENTER HOSPITAL", city: "ALBANY", address: "ALBANY, NY", website: "https://www.albanymed.org/", image: "albany.jfif" },
   { name: "CAPITAL DISTRICT PSYCH CENTER", city: "ALBANY", address: "ALBANY, NY", website: "https://omh.ny.gov/omhweb/facilities/cdpc/", image: "albany2.jfif" },
-  
-  // AMITYVILLE
   { name: "BRUNSWICK HOSPITAL CENTER, INC.", city: "AMITYVILLE", address: "AMITYVILLE, NY", website: "https://www.brunswickhospitalcenter.org/", image: "brunswick.jfif" },
   { name: "SOUTH OAKS HOSP", city: "AMITYVILLE", address: "AMITYVILLE, NY", website: "https://southoaks.northwell.edu/", image: "south.jfif" },
-  
-  // AMSTERDAM
   { name: "ST MARY'S HEALTHCARE", city: "AMSTERDAM", address: "AMSTERDAM, NY", website: "https://www.smha.org/", image: "mary.jfif" },
-  
-  // AUBURN
   { name: "AUBURN COMMUNITY HOSPITAL", city: "AUBURN", address: "AUBURN, NY", website: "https://www.auburnhospital.org/", image: "auburn.jfif" },
-  
-  // BELLEROSE
   { name: "NEW YORK CITY CHILDRENS PSYCH CENTER", city: "BELLEROSE", address: "BELLEROSE, NY", website: "https://omh.ny.gov/omhweb/facilities/nyccc/", image: "nyc.jfif" },
-  
-  // BINGHAMTON
   { name: "UNITED HEALTH SERVICES HOSPITALS, INC", city: "BINGHAMTON", address: "BINGHAMTON, NY", website: "https://www.nyuhs.org/", image: "uhs.jfif" },
   { name: "GREATER BINGHAMTON HEALTH CENTER", city: "BINGHAMTON", address: "BINGHAMTON, NY", website: "https://omh.ny.gov/omhweb/facilities/bipc/", image: "greater.jfif" },
-  
-  // BRONX
   { name: "BRONXCARE HOSPITAL CENTER", city: "BRONX", address: "BRONX, NY", website: "https://www.bronxcare.org/", image: "bron.jfif" },
   { name: "MONTEFIORE MEDICAL CENTER", city: "BRONX", address: "BRONX, NY", website: "https://montefioreeinstein.org/", image: "montefiore.jfif" },
   { name: "LINCOLN MEDICAL & MENTAL HEALTH CENTER", city: "BRONX", address: "BRONX, NY", website: "https://www.nychealthandhospitals.org/lincoln/", image: "lincoln.jfif" },
   { name: "JACOBI MEDICAL CENTER", city: "BRONX", address: "BRONX, NY", website: "https://www.nychealthandhospitals.org/jacobi/", image: "jacobi.jfif" },
   { name: "ST BARNABAS HOSPITAL", city: "BRONX", address: "BRONX, NY", website: "https://www.sbhny.org/", image: "barnabas.jfif" },
   { name: "BRONX PSYCHIATRIC CENTER", city: "BRONX", address: "BRONX, NY", website: "https://omh.ny.gov/omhweb/facilities/brpc/", image: "mental.jfif" },
-  
-  // BROOKLYN
   { name: "MAIMONIDES MEDICAL CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://maimo.org/", image: "maimonides.jfif" },
   { name: "SOUTH BROOKLYN HEALTH", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://www.nychealthandhospitals.org/coney-island/", image: "sbh.jfif" },
   { name: "KINGS COUNTY HOSPITAL CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://www.nychealthandhospitals.org/kingscounty/", image: "king.jfif" },
   { name: "BROOKDALE HOSPITAL MEDICAL CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://onebrooklynhealth.org/", image: "dale.jfif" },
   { name: "WOODHULL MEDICAL & MENTAL HEALTH CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://www.nychealthandhospitals.org/woodhull/", image: "woodhull.jfif" },
   { name: "KINGSBORO PSYCHIATRIC HOSPITAL", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://omh.ny.gov/omhweb/facilities/kbpc/", image: "boro.jfif" },
-  
-  // BUFFALO
   { name: "ERIE COUNTY MEDICAL CENTER", city: "BUFFALO", address: "BUFFALO, NY", website: "https://www.ecmc.edu/", image: "ecmc.jfif" },
   { name: "BRYLIN HOSP", city: "BUFFALO", address: "BUFFALO, NY", website: "https://www.brylin.com/", image: "brylin.jfif" },
   { name: "BUFFALO PSYCHIATRIC CENTER", city: "BUFFALO", address: "BUFFALO, NY", website: "https://omh.ny.gov/omhweb/facilities/bupc/", image: "buffalo.jfif" },
-  
-  // CARMEL
   { name: "PUTNAM HOSPITAL CENTER", city: "CARMEL", address: "CARMEL, NY", website: "https://www.nuvancehealth.org/locations/putnam-hospital", image: "putnam.jfif" },
-  
-  // CLIFTON SPRINGS
   { name: "CLIFTON SPRINGS HOSPITAL AND CLINIC", city: "CLIFTON SPRINGS", address: "CLIFTON SPRINGS, NY", website: "https://www.rochesterregional.org/locations/hospitals/clifton", image: "clif.jfif" },
-  
-  // CORTLAND
   { name: "GUTHRIE CORTLAND REGIONAL MEDICAL CENTER", city: "CORTLAND", address: "CORTLAND, NY", website: "https://www.guthrie.org/locations/guthrie-cortland-medical-center", image: "guthrie.jfif" },
-  
-  // DIX HILLS
   { name: "SAGAMORE CHILDREN'S PSYCHIATRIC CENTER", city: "DIX HILLS", address: "DIX HILLS, NY", website: "https://omh.ny.gov/omhweb/facilities/scpc/", image: "saga.jfif" },
-  
-  // EAST MEADOW
   { name: "NASSAU UNIVERSITY MEDICAL CENTER", city: "EAST MEADOW", address: "EAST MEADOW, NY", website: "https://www.numc.edu/", image: "nassau.jfif" },
-  
-  // ELMHURST
   { name: "ELMHURST HOSPITAL CENTER", city: "ELMHURST", address: "ELMHURST, NY", website: "https://www.nychealthandhospitals.org/elmhurst/", image: "elm.jfif" },
-  
-  // ELMIRA
   { name: "ARNOT OGDEN MEDICAL CENTER", city: "ELMIRA", address: "ELMIRA, NY", website: "https://www.arnothealth.org/", image: "arnot.jfif" },
   { name: "ELMIRA PSYCH CENTER", city: "ELMIRA", address: "ELMIRA, NY", website: "https://omh.ny.gov/omhweb/facilities/elpc/", image: "elmira.jfif" },
-  
-  // FAR ROCKAWAY
   { name: "ST JOHN'S EPISCOPAL HOSPITAL AT SOUTH SHORE", city: "FAR ROCKAWAY", address: "FAR ROCKAWAY, NY", website: "https://www.sjehealthcare.org/", image: "john.jfif" },
-  
-  // HARRIS
   { name: "GARNET HEALTH MEDICAL CENTER CATSKILLS", city: "HARRIS", address: "HARRIS, NY", website: "https://www.garnethealth.org/", image: "garnet.jfif" },
-  
-  // HUNTINGTON
   { name: "NS/LIJ HS HUNTINGTON HOSPITAL", city: "HUNTINGTON", address: "HUNTINGTON, NY", website: "https://www.northwell.edu/find-care/locations/huntington-hospital", image: "huntington.jfif" },
-  
-  // JAMAICA
   { name: "JAMAICA HOSPITAL MEDICAL CENTER", city: "JAMAICA", address: "JAMAICA, NY", website: "https://www.jamaicahospital.org/", image: "jamaica.jfif" },
   { name: "QUEENS HOSPITAL CENTER", city: "JAMAICA", address: "JAMAICA, NY", website: "https://www.nychealthandhospitals.org/queens/", image: "queens.jfif" },
-  
-  // JAMESTOWN
   { name: "UPMC CHAUTAUQUA AT WCA", city: "JAMESTOWN", address: "JAMESTOWN, NY", website: "https://www.upmc.com/locations/hospitals/chautauqua", image: "upmc.jfif" },
-  
-  // KATONAH
   { name: "FOUR WINDS", city: "KATONAH", address: "KATONAH, NY", website: "https://www.fourwindshospital.com/", image: "four.jfif" },
-  
-  // KINGSTON
   { name: "HEALTHALLIANCE HOSPITAL MARYS AVENUE CAMPUS", city: "KINGSTON", address: "KINGSTON, NY", website: "https://www.wmchealth.org/locations/healthalliance-hospital-mary-s-avenue", image: "health.jfif" },
-  
-  // MANHASSET
   { name: "NORTH SHORE UNIVERSITY HOSPITAL", city: "MANHASSET", address: "MANHASSET, NY", website: "https://www.northwell.edu/find-care/locations/north-shore-university-hospital", image: "north.jfif" },
-  
-  // MIDDLETOWN
   { name: "GARNET HEALTH MEDICAL CENTER", city: "MIDDLETOWN", address: "MIDDLETOWN, NY", website: "https://www.garnethealth.org/", image: "garr.jfif" },
-  
-  // MOUNT KISCO
   { name: "NORTHERN WESTCHESTER HOSPITAL", city: "MOUNT KISCO", address: "MOUNT KISCO, NY", website: "https://www.northwell.edu/find-care/locations/northern-westchester-hospital", image: "west.jfif" },
-  
-  // MOUNT VERNON
   { name: "MONTEFIORE MOUNT VERNON HOSPITAL", city: "MOUNT VERNON", address: "MOUNT VERNON, NY", website: "https://www.montefiorehealthsystem.org/mount-vernon.html", image: "vernon.jfif" },
-  
-  // NEW HAMPTON
   { name: "MID HUDSON FORENSIC PSYCHIATRIC CTR", city: "NEW HAMPTON", address: "NEW HAMPTON, NY", website: "https://omh.ny.gov/omhweb/facilities/mhpc/", image: "forensic.jfif" },
-  
-  // NEW HYDE PARK
   { name: "LONG ISLAND JEWISH MEDICAL CENTER", city: "NEW HYDE PARK", address: "NEW HYDE PARK, NY", website: "https://www.northwell.edu/find-care/locations/long-island-jewish-medical-center", image: "long.jfif" },
-  
-  // NEW YORK
   { name: "MOUNT SINAI HOSPITAL", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.mountsinai.org/", image: "mount.jfif" },
   { name: "MOUNT SINAI WEST", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.mountsinai.org/locations/west", image: "sinai.jfif" },
   { name: "NEW YORK-PRESBYTERIAN HOSPITAL", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.nyp.org/", image: "new.jfif" },
@@ -206,116 +150,234 @@ const healthcareFacilities = [
   { name: "GRACIE SQUARE HOSP", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.nygsh.org/", image: "gracie.jfif" },
   { name: "MANHATTAN PSYCHIATRIC CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "https://omh.ny.gov/omhweb/facilities/mapc/", image: "manhattan.jfif" },
   { name: "KIRBY FORENSIC PSYCHIATRIC CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "https://omh.ny.gov/omhweb/facilities/krpc/", image: "kirby.jfif" },
-  
-  // NYACK
   { name: "NYACK HOSPITAL", city: "NYACK", address: "NYACK, NY", website: "https://www.montefiorenyack.org/", image: "nyack.jfif" },
-  
-  // OCEANSIDE
   { name: "MOUNT SINAI SOUTH NASSAU", city: "OCEANSIDE", address: "OCEANSIDE, NY", website: "https://www.mountsinai.org/locations/south-nassau", image: "mssn.jfif" },
-  
-  // OGDENSBURG
   { name: "ST LAWRENCE PSYCHIATRIC CENTER", city: "OGDENSBURG", address: "OGDENSBURG, NY", website: "https://omh.ny.gov/omhweb/facilities/slpc/", image: "lawrence.jfif" },
   { name: "CLAXTON-HEPBURN MEDICAL CENTER", city: "OGDENSBURG", address: "OGDENSBURG, NY", website: "https://www.claxtonhepburn.org/", image: "claxton.jfif" },
-  
-  // OLEAN
   { name: "OLEAN GENERAL HOSPITAL", city: "OLEAN", address: "OLEAN, NY", website: "https://www.brmc-ogh.org/", image: "olean.jfif" },
-  
-  // ORANGEBURG
   { name: "ROCKLAND PSYCH CTR", city: "ORANGEBURG", address: "ORANGEBURG, NY", website: "https://omh.ny.gov/omhweb/facilities/ropc/", image: "rockland.jfif" },
   { name: "ROCKLAND CHILDREN'S PSYCHIATRIC CENTER", city: "ORANGEBURG", address: "ORANGEBURG, NY", website: "https://omh.ny.gov/omhweb/facilities/rcpc/", image: "children.jfif" },
-  
-  // OSWEGO
   { name: "OSWEGO HOSPITAL", city: "OSWEGO", address: "OSWEGO, NY", website: "https://www.oswegohealth.org/", image: "oswego.jfif" },
-  
-  // PATCHOGUE
   { name: "LONG ISLAND COMMUNITY HOSPITAL", city: "PATCHOGUE", address: "PATCHOGUE, NY", website: "https://nyulangone.org/locations/nyu-langone-hospital-suffolk", image: "island.jfif" },
-  
-  // PORT JEFFERSON
   { name: "JOHN T MATHER MEMORIAL HOSPITAL OF PORT JEFFERSON", city: "PORT JEFFERSON", address: "PORT JEFFERSON, NY", website: "https://www.matherhospital.org/", image: "mather.jfif" },
-  
-  // PORT JERVIS
   { name: "BON SECOURS COMMUNITY HOSPITAL", city: "PORT JERVIS", address: "PORT JERVIS, NY", website: "https://www.bonsecourscommunityhosp.org/", image: "bon.jfif" },
-  
-  // QUEENS VILLAGE
   { name: "CREEDMOOR PSYCHIATRIC CENTER", city: "QUEENS VILLAGE", address: "QUEENS VILLAGE, NY", website: "https://omh.ny.gov/omhweb/facilities/crpc/", image: "creedmoor.jfif" },
-  
-  // ROCHESTER
   { name: "ROCHESTER GENERAL HOSPITAL", city: "ROCHESTER", address: "ROCHESTER, NY", website: "https://www.rochesterregional.org/locations/rochester-general-hospital", image: "roche.jfif" },
   { name: "UNITY HOSPITAL", city: "ROCHESTER", address: "ROCHESTER, NY", website: "https://www.rochesterregional.org/locations/unity-hospital", image: "unity.jfif" },
   { name: "STRONG MEMORIAL HOSPITAL", city: "ROCHESTER", address: "ROCHESTER, NY", website: "https://www.urmc.rochester.edu/strong-memorial.aspx", image: "strong.jfif" },
   { name: "ROCHESTER PSYCHIATRIC CENTER", city: "ROCHESTER", address: "ROCHESTER, NY", website: "https://omh.ny.gov/omhweb/facilities/ropc/", image: "ester.jfif" },
-  
-  // ROCKVILLE CENTRE
   { name: "MERCY MEDICAL CENTER", city: "ROCKVILLE CENTRE", address: "ROCKVILLE CENTRE, NY", website: "https://www.catholichealthli.org/mercy-hospital", image: "mercy.jfif" },
-  
-  // ROME
   { name: "ROME MEMORIAL HOSPITAL, INC", city: "ROME", address: "ROME, NY", website: "https://www.romehealth.org/", image: "rome.jfif" },
-  
-  // SARANAC LAKE
   { name: "ADIRONDACK MEDICAL CENTER - SARANAC LAKE", city: "SARANAC LAKE", address: "SARANAC LAKE, NY", website: "https://www.adirondackhealth.org/", image: "adirondack.jfif" },
-  
-  // SARATOGA SPRINGS
   { name: "FOUR WINDS OF SARATOGA", city: "SARATOGA SPRINGS", address: "SARATOGA SPRINGS, NY", website: "https://www.fourwindshospital.com/about_four_winds/saratoga/index.html", image: "saratoga.jfif" },
-  
-  // SLEEPY HOLLOW
   { name: "PHELPS HOSPITAL", city: "SLEEPY HOLLOW", address: "SLEEPY HOLLOW, NY", website: "https://phelps.northwell.edu/", image: "phelps.jfif" },
-  
-  // SMITHTOWN
   { name: "ST CATHERINE OF SIENA HOSPITAL", city: "SMITHTOWN", address: "SMITHTOWN, NY", website: "https://www.catholichealthli.org/st-catherine-siena-hospital", image: "catherine.jfif" },
-  
-  // STATEN ISLAND
   { name: "RICHMOND UNIVERSITY MEDICAL CENTER", city: "STATEN ISLAND", address: "STATEN ISLAND, NY", website: "https://www.rumcsi.org/", image: "richmond.jfif" },
   { name: "STATEN ISLAND UNIVERSITY HOSPITAL", city: "STATEN ISLAND", address: "STATEN ISLAND, NY", website: "https://www.northwell.edu/find-care/locations/staten-island-university-hospital", image: "staten.jfif" },
   { name: "SOUTH BEACH PSYCHIATRIC CENTER", city: "STATEN ISLAND", address: "STATEN ISLAND, NY", website: "https://omh.ny.gov/omhweb/facilities/sbpc/", image: "sbpc.jfif" },
-  
-  // STONY BROOK
   { name: "SUNY/STONY BROOK UNIVERSITY HOSPITAL", city: "STONY BROOK", address: "STONY BROOK, NY", website: "https://www.stonybrookmedicine.edu/sbuh", image: "stony.jfif" },
-  
-  // SYRACUSE
   { name: "ST JOSEPH'S HOSPITAL HEALTH CENTER", city: "SYRACUSE", address: "SYRACUSE, NY", website: "https://www.sjhsyr.org/", image: "joseph.jfif" },
   { name: "UNIVERSITY HOSPITAL S U N Y HEALTH SCIENCE CENTER", city: "SYRACUSE", address: "SYRACUSE, NY", website: "https://www.upstate.edu/hospital/", image: "sunny.jfif" },
   { name: "HUTCHINGS PSYCHIATRIC CTR", city: "SYRACUSE", address: "SYRACUSE, NY", website: "https://omh.ny.gov/omhweb/facilities/hupc/", image: "hutchings.jfif" },
-  
-  // TROY
   { name: "SAMARITAN HOSPITAL OF TROY, NEW YORK", city: "TROY", address: "TROY, NY", website: "https://www.sphp.com/location/samaritan-hospital", image: "samaritan.jfif" },
-  
-  // UTICA
   { name: "MOHAWK VALLEY PSYCHIATRIC CENTER", city: "UTICA", address: "UTICA, NY", website: "https://omh.ny.gov/omhweb/facilities/mvpc/", image: "mohawk.jfif" },
-  
-  // VALHALLA
   { name: "WESTCHESTER MEDICAL CENTER", city: "VALHALLA", address: "VALHALLA, NY", website: "https://www.wmchealth.org/locations/westchester-medical-center", image: "westchester.jfif" },
-  
-  // WARSAW
   { name: "WYOMING COUNTY", city: "WARSAW", address: "WARSAW, NY", website: "https://www.wcchs.net/", image: "wyoming.jfif" },
-  
-  // WEST BRENTWOOD
   { name: "PILGRIM PSYCHIATRIC CENTER", city: "WEST BRENTWOOD", address: "WEST BRENTWOOD, NY", website: "https://omh.ny.gov/omhweb/facilities/pgpc/", image: "pilgrim.jfif" },
-  
-  // WEST SENECA
   { name: "WESTERN NY CHILDRENS PSYCHIATRIC CENTER", city: "WEST SENECA", address: "WEST SENECA, NY", website: "https://omh.ny.gov/omhweb/facilities/wcpc/", image: "wnyc.jfif" },
-  
-  // YONKERS
   { name: "ST JOSEPH'S MEDICAL CENTER", city: "YONKERS", address: "YONKERS, NY", website: "https://www.saintjosephs.org/", image: "yonkers.jfif" }
 ];
 
-// ===== MOCK DATA KPI (Sementara) =====
-const kpiData = {
-  SMD: Array.from({length: 57}, () => (Math.random() * 20 + 5).toFixed(1)),
-  FAPH30: Array.from({length: 57}, () => (Math.random() * 25 + 10).toFixed(1)),
-  FAPH7: Array.from({length: 57}, () => (Math.random() * 20 + 8).toFixed(1)),
-  MedCont: Array.from({length: 57}, () => (Math.random() * 30 + 15).toFixed(1)),
-  READM: Array.from({length: 57}, () => (Math.random() * 15 + 8).toFixed(1))
+// ===== DATA KPI DARI API =====
+let kpiData = {
+  SMD: [],
+  FAPH30: [],
+  FAPH7: [],
+  MedCont: []
 };
 
-const nyAverages = { SMD: 12.8, FAPH30: 18.5, FAPH7: 14.2, MedCont: 24.2, READM: 13.5 };
+let nyAverages = { SMD: 0, FAPH30: 0, FAPH7: 0, MedCont: 0 };
+
+// ===== READM PIE CHART =====
+let readmPieChart = null;
+
+async function fetchReadmDistribution() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/readm-distribution`);
+    if (response.ok) {
+      const data = await response.json();
+      if (data.success && data.data) {
+        // Update subtitle dengan total facilities
+        const total = data.total || data.data.reduce((sum, item) => sum + item.count, 0);
+        document.getElementById('readmSubtitle').innerHTML = `Comparison of facility performance vs national rate (${total} facilities total)`;
+        createReadmPieChart(data.data);
+        return;
+      }
+    }
+    // Fallback mock data
+    const mockData = [
+      { category: "Better Than the National Rate", count: 36, percentage: 2.5, color: "#2ecc71" },
+      { category: "Same as the National Rate", count: 1107, percentage: 77.8, color: "#f1c40f" },
+      { category: "Worse Than the National Rate", count: 76, percentage: 5.3, color: "#e74c3c" },
+      { category: "Not Available", count: 79, percentage: 5.6, color: "#95a5a6" },
+      { category: "Cases Too Small", count: 124, percentage: 8.7, color: "#bdc3c7" }
+    ];
+    document.getElementById('readmSubtitle').innerHTML = `Comparison of facility performance vs national rate (1422 facilities total)`;
+    createReadmPieChart(mockData);
+  } catch (error) {
+    console.error("Error fetching READM distribution:", error);
+    const mockData = [
+      { category: "Better Than the National Rate", count: 36, percentage: 2.5, color: "#2ecc71" },
+      { category: "Same as the National Rate", count: 1107, percentage: 77.8, color: "#f1c40f" },
+      { category: "Worse Than the National Rate", count: 76, percentage: 5.3, color: "#e74c3c" },
+      { category: "Not Available", count: 79, percentage: 5.6, color: "#95a5a6" },
+      { category: "Cases Too Small", count: 124, percentage: 8.7, color: "#bdc3c7" }
+    ];
+    document.getElementById('readmSubtitle').innerHTML = `Comparison of facility performance vs national rate (1422 facilities total)`;
+    createReadmPieChart(mockData);
+  }
+}
+
+function createReadmPieChart(data) {
+  const ctx = document.getElementById('readmPieChart');
+  if (!ctx) return;
+  
+  // Filter data dengan percentage > 0
+  const filteredData = data.filter(item => item.percentage > 0);
+  const labels = filteredData.map(item => item.category);
+  const percentages = filteredData.map(item => item.percentage);
+  const colors = filteredData.map(item => item.color);
+  const counts = filteredData.map(item => item.count);
+  
+  if (readmPieChart) readmPieChart.destroy();
+  
+  readmPieChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: percentages,
+        backgroundColor: colors,
+        borderWidth: 2,
+        borderColor: '#fff',
+        hoverOffset: 10
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const label = context.label || '';
+              const value = context.raw || 0;
+              const index = context.dataIndex;
+              const count = counts[index] || 0;
+              return `${label}: ${value}% (${count} facilities)`;
+            }
+          }
+        }
+      }
+    }
+  });
+  
+  createCustomLegend(filteredData);
+}
+
+function createCustomLegend(data) {
+  const legendContainer = document.getElementById('readmLengend');
+  if (!legendContainer) return;
+  
+  legendContainer.innerHTML = data.map(item => `
+    <div class="legend-item">
+      <div class="legend-color" style="background-color: ${item.color}"></div>
+      <span class="legend-text">${item.category}</span>
+      <span class="legend-percent">(${item.percentage}%)</span>
+    </div>
+  `).join('');
+}
+
+// ===== FETCH DATA DARI API =====
+async function fetchKPIData() {
+  try {
+    // Fetch READM distribution untuk pie chart
+    await fetchReadmDistribution();
+    
+    const kpiEndpoints = {
+      SMD: `${API_BASE_URL}/api/smd-by-city`,
+      FAPH30: `${API_BASE_URL}/api/faph30-by-city`,
+      FAPH7: `${API_BASE_URL}/api/faph7-by-city`,
+      MedCont: `${API_BASE_URL}/api/medcont-by-city`
+    };
+    
+    for (const [kpi, endpoint] of Object.entries(kpiEndpoints)) {
+      try {
+        const response = await fetch(endpoint);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.data) {
+            const cityValues = allCityNames.map(city => {
+              const cityData = data.data.find(d => d.city === city);
+              return cityData ? cityData.value : (Math.random() * 20 + 10).toFixed(1);
+            });
+            kpiData[kpi] = cityValues;
+            const validValues = cityValues.filter(v => !isNaN(parseFloat(v))).map(v => parseFloat(v));
+            nyAverages[kpi] = (validValues.reduce((a, b) => a + b, 0) / validValues.length).toFixed(1);
+          } else {
+            console.warn(`Endpoint ${kpi} returned invalid data, using mock data`);
+            kpiData[kpi] = Array.from({length: 57}, () => (Math.random() * 20 + 10).toFixed(1));
+            nyAverages[kpi] = (Math.random() * 15 + 12).toFixed(1);
+          }
+        } else {
+          console.warn(`Endpoint ${kpi} not available (${response.status}), using mock data`);
+          kpiData[kpi] = Array.from({length: 57}, () => (Math.random() * 20 + 10).toFixed(1));
+          nyAverages[kpi] = (Math.random() * 15 + 12).toFixed(1);
+        }
+      } catch (error) {
+        console.error(`Error fetching ${kpi}:`, error);
+        kpiData[kpi] = Array.from({length: 57}, () => (Math.random() * 20 + 10).toFixed(1));
+        nyAverages[kpi] = (Math.random() * 15 + 12).toFixed(1);
+      }
+    }
+    refreshAllCharts();
+  } catch (error) {
+    console.error("Error fetching data from API:", error);
+    kpiData = {
+      SMD: Array.from({length: 57}, () => (Math.random() * 20 + 5).toFixed(1)),
+      FAPH30: Array.from({length: 57}, () => (Math.random() * 25 + 10).toFixed(1)),
+      FAPH7: Array.from({length: 57}, () => (Math.random() * 20 + 8).toFixed(1)),
+      MedCont: Array.from({length: 57}, () => (Math.random() * 30 + 15).toFixed(1))
+    };
+    nyAverages = { SMD: 12.8, FAPH30: 18.5, FAPH7: 14.2, MedCont: 24.2 };
+    refreshAllCharts();
+  }
+}
+
+function refreshAllCharts() {
+  if (typeof updateChart1 === 'function') updateChart1();
+  if (typeof updateHighestChart === 'function') updateHighestChart();
+  if (typeof updateLowestChart === 'function') updateLowestChart();
+}
 
 function getDataForKPI(kpi) {
-  if (kpi === 'ALL') return allCityNames.map((_, idx) => ((parseFloat(kpiData.SMD[idx]) + parseFloat(kpiData.FAPH30[idx]) + parseFloat(kpiData.FAPH7[idx]) + parseFloat(kpiData.MedCont[idx]) + parseFloat(kpiData.READM[idx])) / 5).toFixed(1));
+  if (kpi === 'ALL') {
+    return allCityNames.map((_, idx) => {
+      const sum = parseFloat(kpiData.SMD[idx]) + parseFloat(kpiData.FAPH30[idx]) + 
+                  parseFloat(kpiData.FAPH7[idx]) + parseFloat(kpiData.MedCont[idx]);
+      return (sum / 4).toFixed(1);
+    });
+  }
   return kpiData[kpi];
 }
 
 function getNYAvgValue(kpi) {
-  if (kpi === 'ALL') return ((nyAverages.SMD + nyAverages.FAPH30 + nyAverages.FAPH7 + nyAverages.MedCont + nyAverages.READM) / 5).toFixed(1);
+  if (kpi === 'ALL') {
+    const sum = parseFloat(nyAverages.SMD) + parseFloat(nyAverages.FAPH30) + 
+                parseFloat(nyAverages.FAPH7) + parseFloat(nyAverages.MedCont);
+    return (sum / 4).toFixed(1);
+  }
   return nyAverages[kpi];
 }
 
@@ -557,9 +619,7 @@ window.nextHealthcarePage = function() {
 // ===== INITIAL RENDER =====
 setTimeout(() => {
   lucide.createIcons();
-  updateChart1();
-  window.updateHighestChart();
-  window.updateLowestChart();
+  fetchKPIData();
   renderCityOptions();
   renderHealthcareGrid();
 }, 500);

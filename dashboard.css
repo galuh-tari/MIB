@@ -146,3 +146,79 @@ canvas { max-width: 100%; height: auto; max-height: 450px; background: transpare
   .kpi-row-bottom { flex-direction: column; align-items: center; }
   .kpi-row-bottom .flip-card { max-width: 100%; }
 }
+
+/* READM DISTRIBUTION SECTION */
+.readm-distribution-container {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: 32px;
+  box-shadow: none;
+}
+
+.readm-header {
+  background: #E8ECF0;
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+}
+
+.readm-header h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0;
+}
+
+.readm-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 24px;
+}
+
+.readm-pie-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+  background: transparent;
+}
+
+.readm-pie-wrapper canvas {
+  max-width: 400px;
+  max-height: 400px;
+}
+
+.readm-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.legend-text {
+  color: var(--text);
+}
+
+.legend-percent {
+  color: var(--purple);
+  font-weight: 700;
+  margin-left: 4px;
+}
