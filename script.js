@@ -174,8 +174,47 @@ async function loadChart() {
             if (!canvas) return;
 
             const labels = data.map(item => item.city);
-            const values = data.map(item => item[kpiKey]);
+            const values = data.map(item => item[kpiKey] === 0 ? null : item[kpiKey]);
 
+            // new Chart(canvas, {
+            //     type: 'bar',
+            //     data: {
+            //         labels: labels,
+            //         datasets: [{
+            //             label: label,
+            //             data: values,
+            //             backgroundColor: 'rgba(108, 39, 217, 0.85)',
+            //             borderRadius: 4,
+            //         }]
+            //     },
+            //     options: {
+            //         responsive: true,
+            //         maintainAspectRatio: false,
+            //         plugins: {
+            //             legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
+            //             tooltip: {
+            //                 callbacks: {
+            //                     label: (ctx) =>
+            //                         ctx.raw == null
+            //                             ? `${label}: N/A`
+            //                             : `${label}: ${ctx.raw}%`
+            //                 }
+            //             }
+            //         },
+            //         scales: {
+            //             x: {
+            //                 ticks: { maxRotation: 20, minRotation: 0, font: { size: 11 } },
+            //                 grid: { display: false }
+            //             },
+            //             y: {
+            //                 title: { display: true, text: 'Percentage (%)', font: { size: 12 } },
+            //                 ticks: { callback: v => v + '%', font: { size: 11 } },
+            //                 grid: { color: 'rgba(0,0,0,0.05)' }
+            //             }
+            //         }
+            //     },
+
+            // });
             new Chart(canvas, {
                 type: 'bar',
                 data: {
@@ -187,30 +226,54 @@ async function loadChart() {
                         borderRadius: 4,
                     }]
                 },
+
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
+                        legend: { position: 'top' },
                         tooltip: {
                             callbacks: {
-                                label: (ctx) => ` ${label}: ${ctx.raw}%`
+                                label: (ctx) =>
+                                    ctx.raw == null
+                                        ? `${label}: N/A`
+                                        : `${label}: ${ctx.raw}%`
                             }
                         }
                     },
                     scales: {
-                        x: {
-                            ticks: { maxRotation: 20, minRotation: 0, font: { size: 11 } },
-                            grid: { display: false }
-                        },
+                        x: { grid: { display: false } },
                         y: {
-                            title: { display: true, text: 'Percentage (%)', font: { size: 12 } },
-                            ticks: { callback: v => v + '%', font: { size: 11 } },
-                            grid: { color: 'rgba(0,0,0,0.05)' }
+                            ticks: { callback: v => v + '%' }
                         }
                     }
-                }
+                },
+
+                plugins: [{
+                    id: 'naLabel',
+                    afterDatasetsDraw(chart) {
+                        const { ctx } = chart;
+
+                        chart.data.datasets.forEach((dataset, datasetIndex) => {
+                            const meta = chart.getDatasetMeta(datasetIndex);
+
+                            meta.data.forEach((bar, index) => {
+                                const value = dataset.data[index];
+
+                                if (value === null) {
+                                    ctx.save();
+                                    ctx.fillStyle = 'gray';
+                                    ctx.font = '10px sans-serif';
+                                    ctx.textAlign = 'center';
+                                    ctx.fillText('N/A', bar.x, chart.scales.y.getPixelForValue(2));
+                                    ctx.restore();
+                                }
+                            });
+                        });
+                    }
+                }]
             });
+
         }
 
         // Render 4 chart
@@ -263,31 +326,31 @@ async function loadChart() {
 
                 plugins: [
                     {
-                    id: 'naLabel',
-                    afterDatasetsDraw(chart) {
-                        const { ctx } = chart;
+                        id: 'naLabel',
+                        afterDatasetsDraw(chart) {
+                            const { ctx } = chart;
 
-                        chart.data.datasets.forEach((dataset, datasetIndex) => {
-                            const meta = chart.getDatasetMeta(datasetIndex);
+                            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                                const meta = chart.getDatasetMeta(datasetIndex);
 
-                            meta.data.forEach((bar, index) => {
-                                const value = dataset.data[index];
+                                meta.data.forEach((bar, index) => {
+                                    const value = dataset.data[index];
 
-                                if (value === null) {
-                                    ctx.save();
-                                    ctx.fillStyle = 'gray';
-                                    ctx.font = '10px sans-serif';
-                                    ctx.textAlign = 'center';
+                                    if (value === null) {
+                                        ctx.save();
+                                        ctx.fillStyle = 'gray';
+                                        ctx.font = '10px sans-serif';
+                                        ctx.textAlign = 'center';
 
-                                    // posisi teks N/A (dekat bawah)
-                                    ctx.fillText('N/A', bar.x, chart.scales.y.getPixelForValue(2));
+                                        // posisi teks N/A (dekat bawah)
+                                        ctx.fillText('N/A', bar.x, chart.scales.y.getPixelForValue(2));
 
-                                    ctx.restore();
-                                }
+                                        ctx.restore();
+                                    }
+                                });
                             });
-                        });
-                    }
-                }]
+                        }
+                    }]
             });
         }
         buatChart('medcont-chart', baseData.filter(i => i.MedCont > 0), 'MedCont', 'MedCont Rate');
