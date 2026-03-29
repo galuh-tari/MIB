@@ -237,7 +237,6 @@ async function loadChart() {
 
         }
 
-        // Render 4 chart
         buatChart('smd-chart', baseData, 'SMD', 'SMD Rate');
         const faphData = cleanedData;
         const faphCanvas = document.getElementById('faph-chart');
@@ -268,8 +267,14 @@ async function loadChart() {
                         legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
                         tooltip: {
                             callbacks: {
-                                label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw}%`
+                                label: (ctx) =>
+                                    ctx.raw == null
+                                        ? `${label}: N/A`
+                                        : `${label}: ${ctx.raw}%`
                             }
+                            // callbacks: {
+                            //     label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw}%`
+                            // }
                         }
                     },
                     scales: {
@@ -302,10 +307,7 @@ async function loadChart() {
                                         ctx.fillStyle = 'gray';
                                         ctx.font = '10px sans-serif';
                                         ctx.textAlign = 'center';
-
-                                        // posisi teks N/A (dekat bawah)
                                         ctx.fillText('N/A', bar.x, chart.scales.y.getPixelForValue(2));
-
                                         ctx.restore();
                                     }
                                 });
