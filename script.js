@@ -145,11 +145,8 @@ function updateChart1() {
 }
 
 window.changeKPI = function () { currentKPI = document.getElementById('kpiSelect').value; currentPage = 1; updateChart1(); };
-
 window.previousPage = function () { if (currentPage > 1) { currentPage--; updateChart1(); } };
-
 window.nextPage = function () { if (currentPage < totalPages) { currentPage++; updateChart1(); } };
-
 
 async function loadChart() {
     try {
@@ -218,25 +215,23 @@ async function loadChart() {
 
         // Render 4 chart
         buatChart('smd-chart', baseData, 'SMD', 'SMD Rate');
-        // buatChart('faph-chart',    baseData.filter(i => i.FAPH > 0),     'FAPH',    'FAPH-30 Rate');
-        // SESUDAH — grouped bar chart FAPH-30 dan FAPH-7:
-        const faphData = cleanedData.filter(i => i.FAPH30 > 0 || i.FAPH7 > 0);
+        const faphData = cleanedData.filter(i => i.FAPH30 > -1 || i.FAPH7 > -1);
         const faphCanvas = document.getElementById('faph-chart');
         if (faphCanvas) {
             new Chart(faphCanvas, {
                 type: 'bar',
                 data: {
-                    labels: faphData.map(i => i.city),  // nama faskes di sumbu X
+                    labels: faphData.map(i => i.city), 
                     datasets: [
                         {
                             label: 'FAPH30',
-                            data: faphData.map(i => i.FAPH),
+                            data: faphData.map(i => i.FAPH30),
                             backgroundColor: 'rgba(108, 39, 217, 0.85)',  // ungu solid
                             borderRadius: 4,
                         },
                         {
                             label: 'FAPH7',
-                            data: faphData.map(i => i.FAPH7),  // ← sesuaikan nama field dengan API
+                            data: faphData.map(i => i.FAPH7), 
                             backgroundColor: 'rgba(168, 99, 255, 0.6)',   // ungu muda
                             borderRadius: 4,
                         }
