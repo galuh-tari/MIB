@@ -1,5 +1,94 @@
-window.handleLogout = async function() { await signOut(auth); window.location.href = 'index.html'; };
-window.toggleDropdown = function() { document.getElementById('dropdown-menu').classList.toggle('open'); };
+// Firebase Imports
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+
+// Firebase Config
+const firebaseConfig = {
+    apiKey: "AIzaSyB4aNTSgU5wLoarKUGduLnpbwS9gI13PU4",
+    authDomain: "manajemen-informasi-biomedis.firebaseapp.com",
+    projectId: "manajemen-informasi-biomedis",
+    storageBucket: "manajemen-informasi-biomedis.firebasestorage.app",
+    messagingSenderId: "80926759256",
+    appId: "1:80926759256:web:123e1e293638aa4e892d2d",
+    measurementId: "G-LGT7PZFWMH"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Auth State - Menampilkan email di dropdown
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const dropdownEmail = document.getElementById('dropdown-email');
+        if (dropdownEmail) dropdownEmail.textContent = user.email;
+    } else {
+        // Jika tidak login dan bukan di halaman index atau dashboard, redirect
+        const path = window.location.pathname;
+        if (!path.includes('index.html') && !path.includes('dashboard.html')) {
+            window.location.href = 'index.html';
+        }
+    }
+});
+
+// Fungsi Logout
+window.handleLogout = async function() {
+    await signOut(auth);
+    window.location.href = 'index.html';
+};
+
+// Fungsi Toggle Dropdown
+window.toggleDropdown = function() {
+    const dropdown = document.getElementById('dropdown-menu');
+    if (dropdown) {
+        dropdown.classList.toggle('open');
+    }
+};
+
+// Fungsi Modal IPFQR
+window.openIPFQR = function() {
+    const fullText = `
+        <p>The Inpatient Psychiatric Facility Quality Reporting (IPFQR) Program is a pivotal pay-for-reporting initiative established to enhance transparency regarding healthcare quality and empower stakeholders to make informed decisions in psychiatric care.</p>
+        <p>This dashboard leverages IPFQR data to support the evaluation of clinical outcomes, which serve as the primary Key Performance Indicators (KPIs).</p>
+    `;
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const modalOverlay = document.getElementById('modalOverlay');
+    
+    if (modalTitle) modalTitle.innerText = 'About IPFQR Program';
+    if (modalBody) modalBody.innerHTML = fullText;
+    if (modalOverlay) modalOverlay.classList.add('active');
+};
+
+// Fungsi Close Modal
+window.closeModal = function() {
+    const modalOverlay = document.getElementById('modalOverlay');
+    if (modalOverlay) modalOverlay.classList.remove('active');
+};
+
+// Inisialisasi Lucide Icons
+function initLucideIcons() {
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    } else {
+        setTimeout(initLucideIcons, 100);
+    }
+}
+
+// Close dropdown ketika klik di luar
+document.addEventListener('click', function(e) {
+    const avatarWrap = document.getElementById('avatar-wrap');
+    const dropdown = document.getElementById('dropdown-menu');
+    if (avatarWrap && dropdown && !avatarWrap.contains(e.target)) {
+        dropdown.classList.remove('open');
+    }
+});
+
+// Jalankan saat DOM siap
+document.addEventListener('DOMContentLoaded', function() {
+    initLucideIcons();
+});
+
+// ========== KODE ASLI DI BAWAH INI JANGAN DIUBAH ==========
 
 let currentPage = 1, citiesPerPage = 10, totalPages = Math.ceil(57 / citiesPerPage), chart1, currentKPI = 'ALL';
 
@@ -49,7 +138,9 @@ function updateChart1() {
         }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } }, tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}%` } } }, scales: { y: { title: { display: true, text: 'Percentage (%)', font: { size: 12 } }, min: 0, max: 50, ticks: { stepSize: 5, callback: (v) => v + '%', font: { size: 11 } } }, x: { ticks: { maxRotation: 0, minRotation: 0, font: { size: 11 } } } } }
     });
 
-    setTimeout(() => lucide.createIcons(), 100);
+    setTimeout(() => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }, 100);
 
 }
 

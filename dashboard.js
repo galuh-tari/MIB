@@ -86,103 +86,216 @@ const allCityNames = [
   "WARSAW", "WEST BRENTWOOD", "WEST SENECA", "YONKERS"
 ];
 
-// ===== DATA 95 FACILITY ASLI =====
+// ===== DATA 95 FACILITY (LENGKAP DENGAN WEBSITE DAN GAMBAR) =====
 const healthcareFacilities = [
-  { name: "ALBANY MEDICAL CENTER HOSPITAL", city: "ALBANY", address: "ALBANY, NY", website: "#" },
-  { name: "CAPITAL DISTRICT PSYCH CENTER", city: "ALBANY", address: "ALBANY, NY", website: "#" },
-  { name: "BRUNSWICK HOSPITAL CENTER, INC.", city: "AMITYVILLE", address: "AMITYVILLE, NY", website: "#" },
-  { name: "SOUTH OAKS HOSP", city: "AMITYVILLE", address: "AMITYVILLE, NY", website: "#" },
-  { name: "ST MARY'S HEALTHCARE", city: "AMSTERDAM", address: "AMSTERDAM, NY", website: "#" },
-  { name: "AUBURN COMMUNITY HOSPITAL", city: "AUBURN", address: "AUBURN, NY", website: "#" },
-  { name: "NEW YORK CITY CHILDRENS PSYCH CENTER", city: "BELLEROSE", address: "BELLEROSE, NY", website: "#" },
-  { name: "UNITED HEALTH SERVICES HOSPITALS, INC", city: "BINGHAMTON", address: "BINGHAMTON, NY", website: "#" },
-  { name: "GREATER BINGHAMTON HEALTH CENTER", city: "BINGHAMTON", address: "BINGHAMTON, NY", website: "#" },
-  { name: "BRONXCARE HOSPITAL CENTER", city: "BRONX", address: "BRONX, NY", website: "#" },
-  { name: "MONTEFIORE MEDICAL CENTER", city: "BRONX", address: "BRONX, NY", website: "#" },
-  { name: "LINCOLN MEDICAL & MENTAL HEALTH CENTER", city: "BRONX", address: "BRONX, NY", website: "#" },
-  { name: "JACOBI MEDICAL CENTER", city: "BRONX", address: "BRONX, NY", website: "#" },
-  { name: "ST BARNABAS HOSPITAL", city: "BRONX", address: "BRONX, NY", website: "#" },
-  { name: "BRONX PSYCHIATRIC CENTER", city: "BRONX", address: "BRONX, NY", website: "#" },
-  { name: "MAIMONIDES MEDICAL CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "#" },
-  { name: "SOUTH BROOKLYN HEALTH", city: "BROOKLYN", address: "BROOKLYN, NY", website: "#" },
-  { name: "KINGS COUNTY HOSPITAL CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "#" },
-  { name: "BROOKDALE HOSPITAL MEDICAL CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "#" },
-  { name: "WOODHULL MEDICAL & MENTAL HEALTH CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "#" },
-  { name: "KINGSBORO PSYCHIATRIC HOSPITAL", city: "BROOKLYN", address: "BROOKLYN, NY", website: "#" },
-  { name: "ERIE COUNTY MEDICAL CENTER", city: "BUFFALO", address: "BUFFALO, NY", website: "#" },
-  { name: "BRYLIN HOSP", city: "BUFFALO", address: "BUFFALO, NY", website: "#" },
-  { name: "BUFFALO PSYCHIATRIC CENTER", city: "BUFFALO", address: "BUFFALO, NY", website: "#" },
-  { name: "PUTNAM HOSPITAL CENTER", city: "CARMEL", address: "CARMEL, NY", website: "#" },
-  { name: "CLIFTON SPRINGS HOSPITAL AND CLINIC", city: "CLIFTON SPRINGS", address: "CLIFTON SPRINGS, NY", website: "#" },
-  { name: "GUTHRIE CORTLAND REGIONAL MEDICAL CENTER", city: "CORTLAND", address: "CORTLAND, NY", website: "#" },
-  { name: "SAGAMORE CHILDREN'S PSYCHIATRIC CENTER", city: "DIX HILLS", address: "DIX HILLS, NY", website: "#" },
-  { name: "NASSAU UNIVERSITY MEDICAL CENTER", city: "EAST MEADOW", address: "EAST MEADOW, NY", website: "#" },
-  { name: "ELMHURST HOSPITAL CENTER", city: "ELMHURST", address: "ELMHURST, NY", website: "#" },
-  { name: "ARNOT OGDEN MEDICAL CENTER", city: "ELMIRA", address: "ELMIRA, NY", website: "#" },
-  { name: "ELMIRA PSYCH CENTER", city: "ELMIRA", address: "ELMIRA, NY", website: "#" },
-  { name: "ST JOHN'S EPISCOPAL HOSPITAL AT SOUTH SHORE", city: "FAR ROCKAWAY", address: "FAR ROCKAWAY, NY", website: "#" },
-  { name: "GARNET HEALTH MEDICAL CENTER CATSKILLS", city: "HARRIS", address: "HARRIS, NY", website: "#" },
-  { name: "NS/LIJ HS HUNTINGTON HOSPITAL", city: "HUNTINGTON", address: "HUNTINGTON, NY", website: "#" },
-  { name: "JAMAICA HOSPITAL MEDICAL CENTER", city: "JAMAICA", address: "JAMAICA, NY", website: "#" },
-  { name: "QUEENS HOSPITAL CENTER", city: "JAMAICA", address: "JAMAICA, NY", website: "#" },
-  { name: "UPMC CHAUTAUQUA AT WCA", city: "JAMESTOWN", address: "JAMESTOWN, NY", website: "#" },
-  { name: "FOUR WINDS", city: "KATONAH", address: "KATONAH, NY", website: "#" },
-  { name: "HEALTHALLIANCE HOSPITAL MARYS AVENUE CAMPUS", city: "KINGSTON", address: "KINGSTON, NY", website: "#" },
-  { name: "NORTH SHORE UNIVERSITY HOSPITAL", city: "MANHASSET", address: "MANHASSET, NY", website: "#" },
-  { name: "GARNET HEALTH MEDICAL CENTER", city: "MIDDLETOWN", address: "MIDDLETOWN, NY", website: "#" },
-  { name: "NORTHERN WESTCHESTER HOSPITAL", city: "MOUNT KISCO", address: "MOUNT KISCO, NY", website: "#" },
-  { name: "MONTEFIORE MOUNT VERNON HOSPITAL", city: "MOUNT VERNON", address: "MOUNT VERNON, NY", website: "#" },
-  { name: "MID HUDSON FORENSIC PSYCHIATRIC CTR", city: "NEW HAMPTON", address: "NEW HAMPTON, NY", website: "#" },
-  { name: "LONG ISLAND JEWISH MEDICAL CENTER", city: "NEW HYDE PARK", address: "NEW HYDE PARK, NY", website: "#" },
-  { name: "MOUNT SINAI HOSPITAL", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "MOUNT SINAI WEST", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "NEW YORK-PRESBYTERIAN HOSPITAL", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "LENOX HILL HOSPITAL", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "MOUNT SINAI BETH ISRAEL", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "METROPOLITAN HOSPITAL CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "BELLEVUE HOSPITAL CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "NYU LANGONE HOSPITALS", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "HARLEM HOSPITAL CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "NEW YORK STATE PSYCHIATRIC INSTITUTE", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "GRACIE SQUARE HOSP", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "MANHATTAN PSYCHIATRIC CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "KIRBY FORENSIC PSYCHIATRIC CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "#" },
-  { name: "NYACK HOSPITAL", city: "NYACK", address: "NYACK, NY", website: "#" },
-  { name: "MOUNT SINAI SOUTH NASSAU", city: "OCEANSIDE", address: "OCEANSIDE, NY", website: "#" },
-  { name: "ST LAWRENCE PSYCHIATRIC CENTER", city: "OGDENSBURG", address: "OGDENSBURG, NY", website: "#" },
-  { name: "CLAXTON-HEPBURN MEDICAL CENTER", city: "OGDENSBURG", address: "OGDENSBURG, NY", website: "#" },
-  { name: "OLEAN GENERAL HOSPITAL", city: "OLEAN", address: "OLEAN, NY", website: "#" },
-  { name: "ROCKLAND PSYCH CTR", city: "ORANGEBURG", address: "ORANGEBURG, NY", website: "#" },
-  { name: "ROCKLAND CHILDREN'S PSYCHIATRIC CENTER", city: "ORANGEBURG", address: "ORANGEBURG, NY", website: "#" },
-  { name: "OSWEGO HOSPITAL", city: "OSWEGO", address: "OSWEGO, NY", website: "#" },
-  { name: "LONG ISLAND COMMUNITY HOSPITAL", city: "PATCHOGUE", address: "PATCHOGUE, NY", website: "#" },
-  { name: "JOHN T MATHER MEMORIAL HOSPITAL OF PORT JEFFERSON", city: "PORT JEFFERSON", address: "PORT JEFFERSON, NY", website: "#" },
-  { name: "BON SECOURS COMMUNITY HOSPITAL", city: "PORT JERVIS", address: "PORT JERVIS, NY", website: "#" },
-  { name: "CREEDMOOR PSYCHIATRIC CENTER", city: "QUEENS VILLAGE", address: "QUEENS VILLAGE, NY", website: "#" },
-  { name: "ROCHESTER GENERAL HOSPITAL", city: "ROCHESTER", address: "ROCHESTER, NY", website: "#" },
-  { name: "UNITY HOSPITAL", city: "ROCHESTER", address: "ROCHESTER, NY", website: "#" },
-  { name: "STRONG MEMORIAL HOSPITAL", city: "ROCHESTER", address: "ROCHESTER, NY", website: "#" },
-  { name: "ROCHESTER PSYCHIATRIC CENTER", city: "ROCHESTER", address: "ROCHESTER, NY", website: "#" },
-  { name: "MERCY MEDICAL CENTER", city: "ROCKVILLE CENTRE", address: "ROCKVILLE CENTRE, NY", website: "#" },
-  { name: "ROME MEMORIAL HOSPITAL, INC", city: "ROME", address: "ROME, NY", website: "#" },
-  { name: "ADIRONDACK MEDICAL CENTER - SARANAC LAKE", city: "SARANAC LAKE", address: "SARANAC LAKE, NY", website: "#" },
-  { name: "FOUR WINDS OF SARATOGA", city: "SARATOGA SPRINGS", address: "SARATOGA SPRINGS, NY", website: "#" },
-  { name: "PHELPS HOSPITAL", city: "SLEEPY HOLLOW", address: "SLEEPY HOLLOW, NY", website: "#" },
-  { name: "ST CATHERINE OF SIENA HOSPITAL", city: "SMITHTOWN", address: "SMITHTOWN, NY", website: "#" },
-  { name: "RICHMOND UNIVERSITY MEDICAL CENTER", city: "STATEN ISLAND", address: "STATEN ISLAND, NY", website: "#" },
-  { name: "STATEN ISLAND UNIVERSITY HOSPITAL", city: "STATEN ISLAND", address: "STATEN ISLAND, NY", website: "#" },
-  { name: "SOUTH BEACH PSYCHIATRIC CENTER", city: "STATEN ISLAND", address: "STATEN ISLAND, NY", website: "#" },
-  { name: "SUNY/STONY BROOK UNIVERSITY HOSPITAL", city: "STONY BROOK", address: "STONY BROOK, NY", website: "#" },
-  { name: "ST JOSEPH'S HOSPITAL HEALTH CENTER", city: "SYRACUSE", address: "SYRACUSE, NY", website: "#" },
-  { name: "UNIVERSITY HOSPITAL S U N Y HEALTH SCIENCE CENTER", city: "SYRACUSE", address: "SYRACUSE, NY", website: "#" },
-  { name: "HUTCHINGS PSYCHIATRIC CTR", city: "SYRACUSE", address: "SYRACUSE, NY", website: "#" },
-  { name: "SAMARITAN HOSPITAL OF TROY, NEW YORK", city: "TROY", address: "TROY, NY", website: "#" },
-  { name: "MOHAWK VALLEY PSYCHIATRIC CENTER", city: "UTICA", address: "UTICA, NY", website: "#" },
-  { name: "WESTCHESTER MEDICAL CENTER", city: "VALHALLA", address: "VALHALLA, NY", website: "#" },
-  { name: "WYOMING COUNTY", city: "WARSAW", address: "WARSAW, NY", website: "#" },
-  { name: "PILGRIM PSYCHIATRIC CENTER", city: "WEST BRENTWOOD", address: "WEST BRENTWOOD, NY", website: "#" },
-  { name: "WESTERN NY CHILDRENS PSYCHIATRIC CENTER", city: "WEST SENECA", address: "WEST SENECA, NY", website: "#" },
-  { name: "ST JOSEPH'S MEDICAL CENTER", city: "YONKERS", address: "YONKERS, NY", website: "#" }
+  // ALBANY
+  { name: "ALBANY MEDICAL CENTER HOSPITAL", city: "ALBANY", address: "ALBANY, NY", website: "https://www.albanymed.org/", image: "albany.jfif" },
+  { name: "CAPITAL DISTRICT PSYCH CENTER", city: "ALBANY", address: "ALBANY, NY", website: "https://omh.ny.gov/omhweb/facilities/cdpc/", image: "albany2.jfif" },
+  
+  // AMITYVILLE
+  { name: "BRUNSWICK HOSPITAL CENTER, INC.", city: "AMITYVILLE", address: "AMITYVILLE, NY", website: "https://www.brunswickhospitalcenter.org/", image: "brunswick.jfif" },
+  { name: "SOUTH OAKS HOSP", city: "AMITYVILLE", address: "AMITYVILLE, NY", website: "https://southoaks.northwell.edu/", image: "south.jfif" },
+  
+  // AMSTERDAM
+  { name: "ST MARY'S HEALTHCARE", city: "AMSTERDAM", address: "AMSTERDAM, NY", website: "https://www.smha.org/", image: "mary.jfif" },
+  
+  // AUBURN
+  { name: "AUBURN COMMUNITY HOSPITAL", city: "AUBURN", address: "AUBURN, NY", website: "https://www.auburnhospital.org/", image: "auburn.jfif" },
+  
+  // BELLEROSE
+  { name: "NEW YORK CITY CHILDRENS PSYCH CENTER", city: "BELLEROSE", address: "BELLEROSE, NY", website: "https://omh.ny.gov/omhweb/facilities/nyccc/", image: "nyc.jfif" },
+  
+  // BINGHAMTON
+  { name: "UNITED HEALTH SERVICES HOSPITALS, INC", city: "BINGHAMTON", address: "BINGHAMTON, NY", website: "https://www.nyuhs.org/", image: "uhs.jfif" },
+  { name: "GREATER BINGHAMTON HEALTH CENTER", city: "BINGHAMTON", address: "BINGHAMTON, NY", website: "https://omh.ny.gov/omhweb/facilities/bipc/", image: "greater.jfif" },
+  
+  // BRONX
+  { name: "BRONXCARE HOSPITAL CENTER", city: "BRONX", address: "BRONX, NY", website: "https://www.bronxcare.org/", image: "bron.jfif" },
+  { name: "MONTEFIORE MEDICAL CENTER", city: "BRONX", address: "BRONX, NY", website: "https://montefioreeinstein.org/", image: "montefiore.jfif" },
+  { name: "LINCOLN MEDICAL & MENTAL HEALTH CENTER", city: "BRONX", address: "BRONX, NY", website: "https://www.nychealthandhospitals.org/lincoln/", image: "lincoln.jfif" },
+  { name: "JACOBI MEDICAL CENTER", city: "BRONX", address: "BRONX, NY", website: "https://www.nychealthandhospitals.org/jacobi/", image: "jacobi.jfif" },
+  { name: "ST BARNABAS HOSPITAL", city: "BRONX", address: "BRONX, NY", website: "https://www.sbhny.org/", image: "barnabas.jfif" },
+  { name: "BRONX PSYCHIATRIC CENTER", city: "BRONX", address: "BRONX, NY", website: "https://omh.ny.gov/omhweb/facilities/brpc/", image: "mental.jfif" },
+  
+  // BROOKLYN
+  { name: "MAIMONIDES MEDICAL CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://maimo.org/", image: "maimonides.jfif" },
+  { name: "SOUTH BROOKLYN HEALTH", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://www.nychealthandhospitals.org/coney-island/", image: "sbh.jfif" },
+  { name: "KINGS COUNTY HOSPITAL CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://www.nychealthandhospitals.org/kingscounty/", image: "king.jfif" },
+  { name: "BROOKDALE HOSPITAL MEDICAL CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://onebrooklynhealth.org/", image: "dale.jfif" },
+  { name: "WOODHULL MEDICAL & MENTAL HEALTH CENTER", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://www.nychealthandhospitals.org/woodhull/", image: "woodhull.jfif" },
+  { name: "KINGSBORO PSYCHIATRIC HOSPITAL", city: "BROOKLYN", address: "BROOKLYN, NY", website: "https://omh.ny.gov/omhweb/facilities/kbpc/", image: "boro.jfif" },
+  
+  // BUFFALO
+  { name: "ERIE COUNTY MEDICAL CENTER", city: "BUFFALO", address: "BUFFALO, NY", website: "https://www.ecmc.edu/", image: "ecmc.jfif" },
+  { name: "BRYLIN HOSP", city: "BUFFALO", address: "BUFFALO, NY", website: "https://www.brylin.com/", image: "brylin.jfif" },
+  { name: "BUFFALO PSYCHIATRIC CENTER", city: "BUFFALO", address: "BUFFALO, NY", website: "https://omh.ny.gov/omhweb/facilities/bupc/", image: "buffalo.jfif" },
+  
+  // CARMEL
+  { name: "PUTNAM HOSPITAL CENTER", city: "CARMEL", address: "CARMEL, NY", website: "https://www.nuvancehealth.org/locations/putnam-hospital", image: "putnam.jfif" },
+  
+  // CLIFTON SPRINGS
+  { name: "CLIFTON SPRINGS HOSPITAL AND CLINIC", city: "CLIFTON SPRINGS", address: "CLIFTON SPRINGS, NY", website: "https://www.rochesterregional.org/locations/hospitals/clifton", image: "clif.jfif" },
+  
+  // CORTLAND
+  { name: "GUTHRIE CORTLAND REGIONAL MEDICAL CENTER", city: "CORTLAND", address: "CORTLAND, NY", website: "https://www.guthrie.org/locations/guthrie-cortland-medical-center", image: "guthrie.jfif" },
+  
+  // DIX HILLS
+  { name: "SAGAMORE CHILDREN'S PSYCHIATRIC CENTER", city: "DIX HILLS", address: "DIX HILLS, NY", website: "https://omh.ny.gov/omhweb/facilities/scpc/", image: "saga.jfif" },
+  
+  // EAST MEADOW
+  { name: "NASSAU UNIVERSITY MEDICAL CENTER", city: "EAST MEADOW", address: "EAST MEADOW, NY", website: "https://www.numc.edu/", image: "nassau.jfif" },
+  
+  // ELMHURST
+  { name: "ELMHURST HOSPITAL CENTER", city: "ELMHURST", address: "ELMHURST, NY", website: "https://www.nychealthandhospitals.org/elmhurst/", image: "elm.jfif" },
+  
+  // ELMIRA
+  { name: "ARNOT OGDEN MEDICAL CENTER", city: "ELMIRA", address: "ELMIRA, NY", website: "https://www.arnothealth.org/", image: "arnot.jfif" },
+  { name: "ELMIRA PSYCH CENTER", city: "ELMIRA", address: "ELMIRA, NY", website: "https://omh.ny.gov/omhweb/facilities/elpc/", image: "elmira.jfif" },
+  
+  // FAR ROCKAWAY
+  { name: "ST JOHN'S EPISCOPAL HOSPITAL AT SOUTH SHORE", city: "FAR ROCKAWAY", address: "FAR ROCKAWAY, NY", website: "https://www.sjehealthcare.org/", image: "john.jfif" },
+  
+  // HARRIS
+  { name: "GARNET HEALTH MEDICAL CENTER CATSKILLS", city: "HARRIS", address: "HARRIS, NY", website: "https://www.garnethealth.org/", image: "garnet.jfif" },
+  
+  // HUNTINGTON
+  { name: "NS/LIJ HS HUNTINGTON HOSPITAL", city: "HUNTINGTON", address: "HUNTINGTON, NY", website: "https://www.northwell.edu/find-care/locations/huntington-hospital", image: "huntington.jfif" },
+  
+  // JAMAICA
+  { name: "JAMAICA HOSPITAL MEDICAL CENTER", city: "JAMAICA", address: "JAMAICA, NY", website: "https://www.jamaicahospital.org/", image: "jamaica.jfif" },
+  { name: "QUEENS HOSPITAL CENTER", city: "JAMAICA", address: "JAMAICA, NY", website: "https://www.nychealthandhospitals.org/queens/", image: "queens.jfif" },
+  
+  // JAMESTOWN
+  { name: "UPMC CHAUTAUQUA AT WCA", city: "JAMESTOWN", address: "JAMESTOWN, NY", website: "https://www.upmc.com/locations/hospitals/chautauqua", image: "upmc.jfif" },
+  
+  // KATONAH
+  { name: "FOUR WINDS", city: "KATONAH", address: "KATONAH, NY", website: "https://www.fourwindshospital.com/", image: "four.jfif" },
+  
+  // KINGSTON
+  { name: "HEALTHALLIANCE HOSPITAL MARYS AVENUE CAMPUS", city: "KINGSTON", address: "KINGSTON, NY", website: "https://www.wmchealth.org/locations/healthalliance-hospital-mary-s-avenue", image: "health.jfif" },
+  
+  // MANHASSET
+  { name: "NORTH SHORE UNIVERSITY HOSPITAL", city: "MANHASSET", address: "MANHASSET, NY", website: "https://www.northwell.edu/find-care/locations/north-shore-university-hospital", image: "north.jfif" },
+  
+  // MIDDLETOWN
+  { name: "GARNET HEALTH MEDICAL CENTER", city: "MIDDLETOWN", address: "MIDDLETOWN, NY", website: "https://www.garnethealth.org/", image: "garr.jfif" },
+  
+  // MOUNT KISCO
+  { name: "NORTHERN WESTCHESTER HOSPITAL", city: "MOUNT KISCO", address: "MOUNT KISCO, NY", website: "https://www.northwell.edu/find-care/locations/northern-westchester-hospital", image: "west.jfif" },
+  
+  // MOUNT VERNON
+  { name: "MONTEFIORE MOUNT VERNON HOSPITAL", city: "MOUNT VERNON", address: "MOUNT VERNON, NY", website: "https://www.montefiorehealthsystem.org/mount-vernon.html", image: "vernon.jfif" },
+  
+  // NEW HAMPTON
+  { name: "MID HUDSON FORENSIC PSYCHIATRIC CTR", city: "NEW HAMPTON", address: "NEW HAMPTON, NY", website: "https://omh.ny.gov/omhweb/facilities/mhpc/", image: "forensic.jfif" },
+  
+  // NEW HYDE PARK
+  { name: "LONG ISLAND JEWISH MEDICAL CENTER", city: "NEW HYDE PARK", address: "NEW HYDE PARK, NY", website: "https://www.northwell.edu/find-care/locations/long-island-jewish-medical-center", image: "long.jfif" },
+  
+  // NEW YORK
+  { name: "MOUNT SINAI HOSPITAL", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.mountsinai.org/", image: "mount.jfif" },
+  { name: "MOUNT SINAI WEST", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.mountsinai.org/locations/west", image: "sinai.jfif" },
+  { name: "NEW YORK-PRESBYTERIAN HOSPITAL", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.nyp.org/", image: "new.jfif" },
+  { name: "LENOX HILL HOSPITAL", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.northwell.edu/find-care/locations/lenox-hill-hospital", image: "lenox.jfif" },
+  { name: "MOUNT SINAI BETH ISRAEL", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.mountsinai.org/locations/msbi", image: "beth.jfif" },
+  { name: "METROPOLITAN HOSPITAL CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.nychealthandhospitals.org/metropolitan/", image: "metro.jfif" },
+  { name: "BELLEVUE HOSPITAL CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.nychealthandhospitals.org/bellevue/", image: "belle.jfif" },
+  { name: "NYU LANGONE HOSPITALS", city: "NEW YORK", address: "NEW YORK, NY", website: "https://nyulangone.org/", image: "nyu.jfif" },
+  { name: "HARLEM HOSPITAL CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.nychealthandhospitals.org/harlem/", image: "center.jfif" },
+  { name: "NEW YORK STATE PSYCHIATRIC INSTITUTE", city: "NEW YORK", address: "NEW YORK, NY", website: "https://nyspi.org/", image: "state.jfif" },
+  { name: "GRACIE SQUARE HOSP", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.nygsh.org/", image: "gracie.jfif" },
+  { name: "MANHATTAN PSYCHIATRIC CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "https://omh.ny.gov/omhweb/facilities/mapc/", image: "manhattan.jfif" },
+  { name: "KIRBY FORENSIC PSYCHIATRIC CENTER", city: "NEW YORK", address: "NEW YORK, NY", website: "https://omh.ny.gov/omhweb/facilities/krpc/", image: "kirby.jfif" },
+  
+  // NYACK
+  { name: "NYACK HOSPITAL", city: "NYACK", address: "NYACK, NY", website: "https://www.montefiorenyack.org/", image: "nyack.jfif" },
+  
+  // OCEANSIDE
+  { name: "MOUNT SINAI SOUTH NASSAU", city: "OCEANSIDE", address: "OCEANSIDE, NY", website: "https://www.mountsinai.org/locations/south-nassau", image: "mssn.jfif" },
+  
+  // OGDENSBURG
+  { name: "ST LAWRENCE PSYCHIATRIC CENTER", city: "OGDENSBURG", address: "OGDENSBURG, NY", website: "https://omh.ny.gov/omhweb/facilities/slpc/", image: "lawrence.jfif" },
+  { name: "CLAXTON-HEPBURN MEDICAL CENTER", city: "OGDENSBURG", address: "OGDENSBURG, NY", website: "https://www.claxtonhepburn.org/", image: "claxton.jfif" },
+  
+  // OLEAN
+  { name: "OLEAN GENERAL HOSPITAL", city: "OLEAN", address: "OLEAN, NY", website: "https://www.brmc-ogh.org/", image: "olean.jfif" },
+  
+  // ORANGEBURG
+  { name: "ROCKLAND PSYCH CTR", city: "ORANGEBURG", address: "ORANGEBURG, NY", website: "https://omh.ny.gov/omhweb/facilities/ropc/", image: "rockland.jfif" },
+  { name: "ROCKLAND CHILDREN'S PSYCHIATRIC CENTER", city: "ORANGEBURG", address: "ORANGEBURG, NY", website: "https://omh.ny.gov/omhweb/facilities/rcpc/", image: "children.jfif" },
+  
+  // OSWEGO
+  { name: "OSWEGO HOSPITAL", city: "OSWEGO", address: "OSWEGO, NY", website: "https://www.oswegohealth.org/", image: "oswego.jfif" },
+  
+  // PATCHOGUE
+  { name: "LONG ISLAND COMMUNITY HOSPITAL", city: "PATCHOGUE", address: "PATCHOGUE, NY", website: "https://nyulangone.org/locations/nyu-langone-hospital-suffolk", image: "island.jfif" },
+  
+  // PORT JEFFERSON
+  { name: "JOHN T MATHER MEMORIAL HOSPITAL OF PORT JEFFERSON", city: "PORT JEFFERSON", address: "PORT JEFFERSON, NY", website: "https://www.matherhospital.org/", image: "mather.jfif" },
+  
+  // PORT JERVIS
+  { name: "BON SECOURS COMMUNITY HOSPITAL", city: "PORT JERVIS", address: "PORT JERVIS, NY", website: "https://www.bonsecourscommunityhosp.org/", image: "bon.jfif" },
+  
+  // QUEENS VILLAGE
+  { name: "CREEDMOOR PSYCHIATRIC CENTER", city: "QUEENS VILLAGE", address: "QUEENS VILLAGE, NY", website: "https://omh.ny.gov/omhweb/facilities/crpc/", image: "creedmoor.jfif" },
+  
+  // ROCHESTER
+  { name: "ROCHESTER GENERAL HOSPITAL", city: "ROCHESTER", address: "ROCHESTER, NY", website: "https://www.rochesterregional.org/locations/rochester-general-hospital", image: "roche.jfif" },
+  { name: "UNITY HOSPITAL", city: "ROCHESTER", address: "ROCHESTER, NY", website: "https://www.rochesterregional.org/locations/unity-hospital", image: "unity.jfif" },
+  { name: "STRONG MEMORIAL HOSPITAL", city: "ROCHESTER", address: "ROCHESTER, NY", website: "https://www.urmc.rochester.edu/strong-memorial.aspx", image: "strong.jfif" },
+  { name: "ROCHESTER PSYCHIATRIC CENTER", city: "ROCHESTER", address: "ROCHESTER, NY", website: "https://omh.ny.gov/omhweb/facilities/ropc/", image: "ester.jfif" },
+  
+  // ROCKVILLE CENTRE
+  { name: "MERCY MEDICAL CENTER", city: "ROCKVILLE CENTRE", address: "ROCKVILLE CENTRE, NY", website: "https://www.catholichealthli.org/mercy-hospital", image: "mercy.jfif" },
+  
+  // ROME
+  { name: "ROME MEMORIAL HOSPITAL, INC", city: "ROME", address: "ROME, NY", website: "https://www.romehealth.org/", image: "rome.jfif" },
+  
+  // SARANAC LAKE
+  { name: "ADIRONDACK MEDICAL CENTER - SARANAC LAKE", city: "SARANAC LAKE", address: "SARANAC LAKE, NY", website: "https://www.adirondackhealth.org/", image: "adirondack.jfif" },
+  
+  // SARATOGA SPRINGS
+  { name: "FOUR WINDS OF SARATOGA", city: "SARATOGA SPRINGS", address: "SARATOGA SPRINGS, NY", website: "https://www.fourwindshospital.com/about_four_winds/saratoga/index.html", image: "saratoga.jfif" },
+  
+  // SLEEPY HOLLOW
+  { name: "PHELPS HOSPITAL", city: "SLEEPY HOLLOW", address: "SLEEPY HOLLOW, NY", website: "https://phelps.northwell.edu/", image: "phelps.jfif" },
+  
+  // SMITHTOWN
+  { name: "ST CATHERINE OF SIENA HOSPITAL", city: "SMITHTOWN", address: "SMITHTOWN, NY", website: "https://www.catholichealthli.org/st-catherine-siena-hospital", image: "catherine.jfif" },
+  
+  // STATEN ISLAND
+  { name: "RICHMOND UNIVERSITY MEDICAL CENTER", city: "STATEN ISLAND", address: "STATEN ISLAND, NY", website: "https://www.rumcsi.org/", image: "richmond.jfif" },
+  { name: "STATEN ISLAND UNIVERSITY HOSPITAL", city: "STATEN ISLAND", address: "STATEN ISLAND, NY", website: "https://www.northwell.edu/find-care/locations/staten-island-university-hospital", image: "staten.jfif" },
+  { name: "SOUTH BEACH PSYCHIATRIC CENTER", city: "STATEN ISLAND", address: "STATEN ISLAND, NY", website: "https://omh.ny.gov/omhweb/facilities/sbpc/", image: "sbpc.jfif" },
+  
+  // STONY BROOK
+  { name: "SUNY/STONY BROOK UNIVERSITY HOSPITAL", city: "STONY BROOK", address: "STONY BROOK, NY", website: "https://www.stonybrookmedicine.edu/sbuh", image: "stony.jfif" },
+  
+  // SYRACUSE
+  { name: "ST JOSEPH'S HOSPITAL HEALTH CENTER", city: "SYRACUSE", address: "SYRACUSE, NY", website: "https://www.sjhsyr.org/", image: "joseph.jfif" },
+  { name: "UNIVERSITY HOSPITAL S U N Y HEALTH SCIENCE CENTER", city: "SYRACUSE", address: "SYRACUSE, NY", website: "https://www.upstate.edu/hospital/", image: "sunny.jfif" },
+  { name: "HUTCHINGS PSYCHIATRIC CTR", city: "SYRACUSE", address: "SYRACUSE, NY", website: "https://omh.ny.gov/omhweb/facilities/hupc/", image: "hutchings.jfif" },
+  
+  // TROY
+  { name: "SAMARITAN HOSPITAL OF TROY, NEW YORK", city: "TROY", address: "TROY, NY", website: "https://www.sphp.com/location/samaritan-hospital", image: "samaritan.jfif" },
+  
+  // UTICA
+  { name: "MOHAWK VALLEY PSYCHIATRIC CENTER", city: "UTICA", address: "UTICA, NY", website: "https://omh.ny.gov/omhweb/facilities/mvpc/", image: "mohawk.jfif" },
+  
+  // VALHALLA
+  { name: "WESTCHESTER MEDICAL CENTER", city: "VALHALLA", address: "VALHALLA, NY", website: "https://www.wmchealth.org/locations/westchester-medical-center", image: "westchester.jfif" },
+  
+  // WARSAW
+  { name: "WYOMING COUNTY", city: "WARSAW", address: "WARSAW, NY", website: "https://www.wcchs.net/", image: "wyoming.jfif" },
+  
+  // WEST BRENTWOOD
+  { name: "PILGRIM PSYCHIATRIC CENTER", city: "WEST BRENTWOOD", address: "WEST BRENTWOOD, NY", website: "https://omh.ny.gov/omhweb/facilities/pgpc/", image: "pilgrim.jfif" },
+  
+  // WEST SENECA
+  { name: "WESTERN NY CHILDRENS PSYCHIATRIC CENTER", city: "WEST SENECA", address: "WEST SENECA, NY", website: "https://omh.ny.gov/omhweb/facilities/wcpc/", image: "western.jfif" },
+  
+  // YONKERS
+  { name: "ST JOSEPH'S MEDICAL CENTER", city: "YONKERS", address: "YONKERS, NY", website: "https://www.saintjosephs.org/", image: "yonkers.jfif" }
 ];
 
 // ===== MOCK DATA KPI (Sementara) =====
@@ -400,17 +513,26 @@ function renderHealthcareGrid() {
   const pageFacilities = healthcareFacilities.slice(start, end);
   
   const container = document.getElementById('healthcareGrid');
-  container.innerHTML = pageFacilities.map(facility => `
-    <a href="${facility.website}" target="_blank" class="healthcare-card">
-      <div class="healthcare-image">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9-4-18-3 9H2"/></svg>
-      </div>
-      <div class="healthcare-info">
-        <div class="healthcare-name">${facility.name.substring(0, 35)}${facility.name.length > 35 ? '...' : ''}</div>
-        <div class="healthcare-address">${facility.address}</div>
-      </div>
-    </a>
-  `).join('');
+  container.innerHTML = pageFacilities.map(facility => {
+    // Cek apakah ada gambar
+    const hasImage = facility.image && facility.image !== '' && facility.image !== '.jfif';
+    const imagePath = `asset/${facility.image}`;
+    
+    return `
+      <a href="${facility.website}" target="_blank" class="healthcare-card">
+        <div class="healthcare-image">
+          ${hasImage ? 
+            `<img src="${imagePath}" style="width: 100%; height: 100%; object-fit: contain; padding: 12px;" onerror="this.onerror=null; this.parentElement.innerHTML='<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'M22 12h-4l-3 9-4-18-3 9H2\'/></svg>'">` : 
+            `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9-4-18-3 9H2"/></svg>`
+          }
+        </div>
+        <div class="healthcare-info">
+          <div class="healthcare-name">${facility.name.substring(0, 35)}${facility.name.length > 35 ? '...' : ''}</div>
+          <div class="healthcare-address">${facility.address}</div>
+        </div>
+      </a>
+    `;
+  }).join('');
   
   document.getElementById('healthcarePageIndicator').innerHTML = `Page ${healthcareCurrentPage} / ${healthcareTotalPages}`;
   document.getElementById('healthcarePrevBtn').disabled = healthcareCurrentPage === 1;

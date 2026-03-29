@@ -86,14 +86,14 @@
     <!-- CHART 2 & 3: Rankings Highest and Lowest -->
     <div class="rankings-row">
       <div>
-        <div class="chart-header-section" style="margin-top:0"><h3>🏆 City-Level KPI's (Rankings for 10 highest cities/towns)</h3></div>
+        <div class="chart-header-section" style="margin-top:0"><h3>City-Level KPI's (Rankings for 10 highest cities/towns)</h3></div>
         <div class="chart-container">
           <div class="chart-controls"><div class="kpi-filter"><label>Filter by KPI:</label><select id="kpiSelectHighest" onchange="updateHighestChart()"><option value="ALL">All</option><option value="SMD">SMD</option><option value="FAPH">FAPH</option><option value="MedCont">MedCont</option><option value="READM">READM</option></select></div><div class="ny-avg-badge" id="nyAvgHighestDisplay">NY State Avg: 13.5</div></div>
           <div class="chart-wrapper"><canvas id="highestChart" style="width:100%; height:400px;"></canvas></div>
         </div>
       </div>
       <div>
-        <div class="chart-header-section" style="margin-top:0"><h3>📉 City-Level KPI's (Rankings for 10 lowest cities/towns)</h3></div>
+        <div class="chart-header-section" style="margin-top:0"><h3>City-Level KPI's (Rankings for 10 lowest cities/towns)</h3></div>
         <div class="chart-container">
           <div class="chart-controls"><div class="kpi-filter"><label>Filter by KPI:</label><select id="kpiSelectLowest" onchange="updateLowestChart()"><option value="ALL">All</option><option value="SMD">SMD</option><option value="FAPH">FAPH</option><option value="MedCont">MedCont</option><option value="READM">READM</option></select></div><div class="ny-avg-badge" id="nyAvgLowestDisplay">NY State Avg: 13.5</div></div>
           <div class="chart-wrapper"><canvas id="lowestChart" style="width:100%; height:400px;"></canvas></div>
