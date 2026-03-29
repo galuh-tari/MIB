@@ -31,13 +31,13 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // Fungsi Logout
-window.handleLogout = async function() {
+window.handleLogout = async function () {
     await signOut(auth);
     window.location.href = 'index.html';
 };
 
 // Fungsi Toggle Dropdown
-window.toggleDropdown = function() {
+window.toggleDropdown = function () {
     const dropdown = document.getElementById('dropdown-menu');
     if (dropdown) {
         dropdown.classList.toggle('open');
@@ -45,7 +45,7 @@ window.toggleDropdown = function() {
 };
 
 // Fungsi Modal IPFQR
-window.openIPFQR = function() {
+window.openIPFQR = function () {
     const fullText = `
         <p>The Inpatient Psychiatric Facility Quality Reporting (IPFQR) Program is a pivotal pay-for-reporting initiative established to enhance transparency regarding healthcare quality and empower stakeholders to make informed decisions in psychiatric care.</p>
         <p>This dashboard leverages IPFQR data to support the evaluation of clinical outcomes, which serve as the primary Key Performance Indicators (KPIs).</p>
@@ -53,14 +53,14 @@ window.openIPFQR = function() {
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
     const modalOverlay = document.getElementById('modalOverlay');
-    
+
     if (modalTitle) modalTitle.innerText = 'About IPFQR Program';
     if (modalBody) modalBody.innerHTML = fullText;
     if (modalOverlay) modalOverlay.classList.add('active');
 };
 
 // Fungsi Close Modal
-window.closeModal = function() {
+window.closeModal = function () {
     const modalOverlay = document.getElementById('modalOverlay');
     if (modalOverlay) modalOverlay.classList.remove('active');
 };
@@ -75,7 +75,7 @@ function initLucideIcons() {
 }
 
 // Close dropdown ketika klik di luar
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     const avatarWrap = document.getElementById('avatar-wrap');
     const dropdown = document.getElementById('dropdown-menu');
     if (avatarWrap && dropdown && !avatarWrap.contains(e.target)) {
@@ -84,7 +84,7 @@ document.addEventListener('click', function(e) {
 });
 
 // Jalankan saat DOM siap
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initLucideIcons();
 });
 
@@ -102,13 +102,13 @@ document.addEventListener('click', (e) => {
 
     if (selectContainer && !selectContainer.contains(e.target)) {
 
-      document.getElementById('selectItems').classList.remove('show');
+        document.getElementById('selectItems').classList.remove('show');
 
-      document.querySelector('.select-selected').classList.remove('active');
+        document.querySelector('.select-selected').classList.remove('active');
 
     }
 
-  });
+});
 
 function updateChart1() {
 
@@ -152,141 +152,147 @@ window.nextPage = function () { if (currentPage < totalPages) { currentPage++; u
 
 
 async function loadChart() {
-  try {
-    const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
-    const result = await response.json();
-    const rawData = result.data;
+    try {
+        const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
+        const result = await response.json();
+        const rawData = result.data;
 
-    // ================================================================
-    //  FILTER: Ambil hanya faskes Amityville
-    //  Nama harus PERSIS sama dengan yang ada di API (huruf besar semua)
-    // ================================================================
-    const amityvilleData = rawData.filter(item =>
-      item.city === 'BRUNSWICK HOSPITAL CENTER, INC.' ||
-      item.city === 'SOUTH OAKS HOSP'
-    );
-    console.log('Amityville data:', amityvilleData); // cek di Console
+        // ================================================================
+        //  FILTER: Ambil hanya faskes Amityville
+        //  Nama harus PERSIS sama dengan yang ada di API (huruf besar semua)
+        // ================================================================
+        // const amityvilleData = rawData.filter(item =>
+        //   item.city === 'BRUNSWICK HOSPITAL CENTER, INC.' ||
+        //   item.city === 'SOUTH OAKS HOSP'
+        // );
 
-    // Kalau tidak ketemu, fallback ke semua data (untuk debugging)
-    const baseData = amityvilleData.length > 0 ? amityvilleData : rawData;
+        const facilityNames = document.body.dataset.facilities.split('|');
 
-    // ================================================================
-    //  FUNGSI HELPER: Buat 1 chart
-    //  canvasId  = id elemen <canvas> di HTML
-    //  data      = array data yang sudah difilter
-    //  kpiKey    = nama field di API ('SMD', 'FAPH', 'MedCont', 'READM')
-    //  label     = teks label di legenda chart
-    //  benchmark = nilai garis putus-putus benchmark
-    //  higherIsBetter = true jika nilai tinggi = bagus (SMD, FAPH, MedCont)
-    //                   false jika nilai rendah = bagus (READM)
-    // ================================================================
-    function buatChart(canvasId, data, kpiKey, label, benchmark, higherIsBetter) {
-      const canvas = document.getElementById(canvasId);
-      if (!canvas) return; // skip kalau canvas tidak ada di halaman ini
+        const cityData = rawData.filter(item =>
+            facilityNames.some(name => item.city.includes(name))
+        );
+        console.log('Amityville data:', amityvilleData); // cek di Console
 
-      const labels = data.map(item => item.city);
-      const values = data.map(item => item[kpiKey]);
+        // Kalau tidak ketemu, fallback ke semua data (untuk debugging)
+        const baseData = amityvilleData.length > 0 ? amityvilleData : rawData;
 
-      new Chart(canvas, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [
+        // ================================================================
+        //  FUNGSI HELPER: Buat 1 chart
+        //  canvasId  = id elemen <canvas> di HTML
+        //  data      = array data yang sudah difilter
+        //  kpiKey    = nama field di API ('SMD', 'FAPH', 'MedCont', 'READM')
+        //  label     = teks label di legenda chart
+        //  benchmark = nilai garis putus-putus benchmark
+        //  higherIsBetter = true jika nilai tinggi = bagus (SMD, FAPH, MedCont)
+        //                   false jika nilai rendah = bagus (READM)
+        // ================================================================
+        function buatChart(canvasId, data, kpiKey, label, benchmark, higherIsBetter) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return; // skip kalau canvas tidak ada di halaman ini
 
-            {
-              // Bar chart KPI
-              type: 'bar',
-              label: label,
-              data: values,
-              backgroundColor: values.map(v => {
-                const bagus = higherIsBetter ? v >= benchmark : v <= benchmark;
-                return bagus
-                  ? 'rgba(108, 39, 217, 0.85)'  // ungu solid = bagus
-                  : 'rgba(108, 39, 217, 0.35)';  // ungu pudar = perlu perhatian
-              }),
-              borderRadius: 4,
-              order: 2
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'top',
-              labels: { boxWidth: 15, padding: 15, font: { size: 12 } }
-            },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => {
-                  if (ctx.datasetIndex === 0) return null;
-                  return ` ${label}: ${ctx.raw}%`;
+            const labels = data.map(item => item.city);
+            const values = data.map(item => item[kpiKey]);
+
+            new Chart(canvas, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+
+                        {
+                            // Bar chart KPI
+                            type: 'bar',
+                            label: label,
+                            data: values,
+                            backgroundColor: values.map(v => {
+                                const bagus = higherIsBetter ? v >= benchmark : v <= benchmark;
+                                return bagus
+                                    ? 'rgba(108, 39, 217, 0.85)'  // ungu solid = bagus
+                                    : 'rgba(108, 39, 217, 0.35)';  // ungu pudar = perlu perhatian
+                            }),
+                            borderRadius: 4,
+                            order: 2
+                        }
+                    ]
                 },
-                afterLabel: (ctx) => {
-                  if (ctx.datasetIndex === 0) return null;
-                  const diff = (ctx.raw - benchmark).toFixed(1);
-                  const sign = diff > 0 ? '+' : '';
-                  return ` vs Benchmark: ${sign}${diff}%`;
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { boxWidth: 15, padding: 15, font: { size: 12 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    if (ctx.datasetIndex === 0) return null;
+                                    return ` ${label}: ${ctx.raw}%`;
+                                },
+                                afterLabel: (ctx) => {
+                                    if (ctx.datasetIndex === 0) return null;
+                                    const diff = (ctx.raw - benchmark).toFixed(1);
+                                    const sign = diff > 0 ? '+' : '';
+                                    return ` vs Benchmark: ${sign}${diff}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                maxRotation: 20,
+                                minRotation: 0,
+                                font: { size: 11 }
+                            },
+                            grid: { display: false }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Percentage (%)',
+                                font: { size: 12 }
+                            },
+                            ticks: {
+                                callback: v => v + '%',
+                                font: { size: 11 }
+                            },
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        }
+                    }
                 }
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: {
-                maxRotation: 20,
-                minRotation: 0,
-                font: { size: 11 }
-              },
-              grid: { display: false }
-            },
-            y: {
-              title: {
-                display: true,
-                text: 'Percentage (%)',
-                font: { size: 12 }
-              },
-              ticks: {
-                callback: v => v + '%',
-                font: { size: 11 }
-              },
-              grid: { color: 'rgba(0,0,0,0.05)' }
-            }
-          }
+            });
         }
-      });
+
+        // ================================================================
+        //  RENDER 4 CHART
+        //  Filter nilai 0 untuk KPI yang datanya tidak tersedia
+        // ================================================================
+
+        // SMD — tampilkan semua (SMD selalu punya data)
+        const smdData = baseData;
+        buatChart('smd-chart', smdData, 'SMD', 'SMD Rate', 82.73, true);
+
+        // FAPH — filter faskes yang tidak punya data (nilai 0)
+        const faphData = baseData.filter(item => item.FAPH > 0);
+        buatChart('faph-chart', faphData, 'FAPH', 'FAPH-30 Rate', 60.07, true);
+
+        // MedCont — filter faskes yang tidak punya data
+        const medcontData = baseData.filter(item => item.MedCont > 0);
+        buatChart('medcont-chart', medcontData, 'MedCont', 'MedCont Rate', 77.30, true);
+
+        // READM — filter faskes yang tidak punya data
+        // higherIsBetter = false karena nilai READM rendah = lebih baik
+        const readmData = baseData.filter(item => item.READM > 0);
+        buatChart('readm-chart', readmData, 'READM', 'Readmission Rate', 18.5, false);
+
+    } catch (error) {
+        console.error('Error ambil data:', error);
+        // Tampilkan pesan error di semua chart wrapper
+        document.querySelectorAll('.chart-wrapper').forEach(el => {
+            el.innerHTML = '<p style="color:red; text-align:center; padding:2rem">Gagal memuat data. Cek koneksi atau CORS.</p>';
+        });
     }
-
-    // ================================================================
-    //  RENDER 4 CHART
-    //  Filter nilai 0 untuk KPI yang datanya tidak tersedia
-    // ================================================================
-
-    // SMD — tampilkan semua (SMD selalu punya data)
-    const smdData = baseData;
-    buatChart('smd-chart', smdData, 'SMD', 'SMD Rate', 82.73, true);
-
-    // FAPH — filter faskes yang tidak punya data (nilai 0)
-    const faphData = baseData.filter(item => item.FAPH > 0);
-    buatChart('faph-chart', faphData, 'FAPH', 'FAPH-30 Rate', 60.07, true);
-
-    // MedCont — filter faskes yang tidak punya data
-    const medcontData = baseData.filter(item => item.MedCont > 0);
-    buatChart('medcont-chart', medcontData, 'MedCont', 'MedCont Rate', 77.30, true);
-
-    // READM — filter faskes yang tidak punya data
-    // higherIsBetter = false karena nilai READM rendah = lebih baik
-    const readmData = baseData.filter(item => item.READM > 0);
-    buatChart('readm-chart', readmData, 'READM', 'Readmission Rate', 18.5, false);
-
-  } catch (error) {
-    console.error('Error ambil data:', error);
-    // Tampilkan pesan error di semua chart wrapper
-    document.querySelectorAll('.chart-wrapper').forEach(el => {
-      el.innerHTML = '<p style="color:red; text-align:center; padding:2rem">Gagal memuat data. Cek koneksi atau CORS.</p>';
-    });
-  }
 }
 
 loadChart();
