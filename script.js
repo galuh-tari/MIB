@@ -224,18 +224,18 @@ async function loadChart() {
         data: {
           labels: labels,
           datasets: [
-            {
-              // Garis benchmark putus-putus
-              type: 'line',
-              label: 'NY State Benchmark',
-              data: new Array(labels.length).fill(benchmark),
-              borderColor: '#FF6B6B',
-              borderWidth: 2,
-              borderDash: [8, 6],
-              pointRadius: 0,
-              fill: false,
-              order: 1
-            },
+            // {
+            //   // Garis benchmark putus-putus
+            //   type: 'line',
+            //   label: 'NY State Benchmark',
+            //   data: new Array(labels.length).fill(benchmark),
+            //   borderColor: '#FF6B6B',
+            //   borderWidth: 2,
+            //   borderDash: [8, 6],
+            //   pointRadius: 0,
+            //   fill: false,
+            //   order: 1
+            // },
             {
               // Bar chart KPI
               type: 'bar',
