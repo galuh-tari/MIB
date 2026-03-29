@@ -151,38 +151,6 @@ window.previousPage = function () { if (currentPage > 1) { currentPage--; update
 window.nextPage = function () { if (currentPage < totalPages) { currentPage++; updateChart1(); } };
 
 
-// async function loadChart() {
-//     try {
-//         const response = await fetch('API_URL_KAMU');
-//         const result = await response.json();
-
-//         const labels = result.map(item => item.month);
-//         const data = result.map(item => item.value);
-
-//         const ctx = document.getElementById('smdChart');
-
-//         new Chart(ctx, {
-//             type: 'bar',
-//             data: {
-//                 labels: labels,
-//                 datasets: [{
-//                     label: 'SMD Score',
-//                     data: data,
-//                 }]
-//             },
-//             options: {
-//                 responsive: true
-//             }
-//         });
-
-//     } catch (error) {
-//         console.error('Error ambil data:', error);
-//     }
-// }
-
-// // jalankan
-// loadChart();
-
 async function loadChart() {
   try {
     const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
@@ -224,18 +192,7 @@ async function loadChart() {
         data: {
           labels: labels,
           datasets: [
-            // {
-            //   // Garis benchmark putus-putus
-            //   type: 'line',
-            //   label: 'NY State Benchmark',
-            //   data: new Array(labels.length).fill(benchmark),
-            //   borderColor: '#FF6B6B',
-            //   borderWidth: 2,
-            //   borderDash: [8, 6],
-            //   pointRadius: 0,
-            //   fill: false,
-            //   order: 1
-            // },
+
             {
               // Bar chart KPI
               type: 'bar',
