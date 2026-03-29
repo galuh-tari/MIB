@@ -221,7 +221,7 @@ async function loadChart() {
             new Chart(faphCanvas, {
                 type: 'bar',
                 data: {
-                    labels: faphData.map(i => i.city), 
+                    labels: faphData.map(i => i.city),
                     datasets: [
                         {
                             label: 'FAPH30',
@@ -231,7 +231,7 @@ async function loadChart() {
                         },
                         {
                             label: 'FAPH7',
-                            data: faphData.map(i => i.FAPH7), 
+                            data: faphData.map(i => i.FAPH7),
                             backgroundColor: 'rgba(168, 99, 255, 0.6)',   // ungu muda
                             borderRadius: 4,
                         }
@@ -259,7 +259,35 @@ async function loadChart() {
                             grid: { color: 'rgba(0,0,0,0.05)' }
                         }
                     }
-                }
+                },
+
+                plugins: [
+                    {
+                    id: 'naLabel',
+                    afterDatasetsDraw(chart) {
+                        const { ctx } = chart;
+
+                        chart.data.datasets.forEach((dataset, datasetIndex) => {
+                            const meta = chart.getDatasetMeta(datasetIndex);
+
+                            meta.data.forEach((bar, index) => {
+                                const value = dataset.data[index];
+
+                                if (value === null) {
+                                    ctx.save();
+                                    ctx.fillStyle = 'gray';
+                                    ctx.font = '10px sans-serif';
+                                    ctx.textAlign = 'center';
+
+                                    // posisi teks N/A (dekat bawah)
+                                    ctx.fillText('N/A', bar.x, chart.scales.y.getPixelForValue(2));
+
+                                    ctx.restore();
+                                }
+                            });
+                        });
+                    }
+                }]
             });
         }
         buatChart('medcont-chart', baseData.filter(i => i.MedCont > 0), 'MedCont', 'MedCont Rate');
