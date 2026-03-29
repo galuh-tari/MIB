@@ -151,34 +151,130 @@ window.previousPage = function () { if (currentPage > 1) { currentPage--; update
 window.nextPage = function () { if (currentPage < totalPages) { currentPage++; updateChart1(); } };
 
 
+// async function loadChart() {
+//     try {
+//         const response = await fetch('API_URL_KAMU');
+//         const result = await response.json();
+
+//         const labels = result.map(item => item.month);
+//         const data = result.map(item => item.value);
+
+//         const ctx = document.getElementById('smdChart');
+
+//         new Chart(ctx, {
+//             type: 'bar',
+//             data: {
+//                 labels: labels,
+//                 datasets: [{
+//                     label: 'SMD Score',
+//                     data: data,
+//                 }]
+//             },
+//             options: {
+//                 responsive: true
+//             }
+//         });
+
+//     } catch (error) {
+//         console.error('Error ambil data:', error);
+//     }
+// }
+
+// // jalankan
+// loadChart();
+
 async function loadChart() {
     try {
-        const response = await fetch('API_URL_KAMU');
+        const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
         const result = await response.json();
+        const rawData = result.data; // ambil dari dalam { success: true, data: [...] }
 
-        const labels = result.map(item => item.month);
-        const data = result.map(item => item.value);
+        // Urutkan ascending berdasarkan READM (nilai kecil = lebih baik)
+        rawData.sort((a, b) => a.READM - b.READM);
 
-        const ctx = document.getElementById('smdChart');
+        const labels = rawData.map(item => item.city);   // nama faskes
+        const data   = rawData.map(item => item.READM);  // nilai KPI
+        const BENCHMARK = 18.5;
+
+        const ctx = document.getElementById('smd-chart'); // sesuai id di HTML kamu
+        // PENTING: id di sini harus sama persis dengan id="smd-chart" di HTML
 
         new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: labels,
-                datasets: [{
-                    label: 'SMD Score',
-                    data: data,
-                }]
+                datasets: [
+                    {
+                        // Dataset 1: Garis benchmark
+                        type: 'line',
+                        label: 'NY State Benchmark',
+                        data: new Array(labels.length).fill(BENCHMARK),
+                        borderColor: '#FF6B6B',
+                        borderWidth: 3,
+                        borderDash: [8, 6],
+                        fill: false,
+                        pointRadius: 0,
+                        order: 1
+                    },
+                    {
+                        // Dataset 2: Bar chart
+                        type: 'bar',
+                        label: '30-Day Readmission Rate',
+                        data: data,
+                        backgroundColor: data.map(v =>
+                            v < BENCHMARK
+                                ? 'rgba(108, 39, 217, 0.85)'  // ungu solid = bagus
+                                : 'rgba(108, 39, 217, 0.35)'  // ungu pudar = perlu perhatian
+                        ),
+                        borderRadius: 4,
+                        order: 2
+                    }
+                ]
             },
             options: {
-                responsive: true
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { boxWidth: 15, padding: 15 }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => {
+                                if (ctx.datasetIndex === 0) return null; // sembunyikan tooltip benchmark
+                                return ` READM: ${ctx.raw}%`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45,
+                            font: { size: 10 }
+                        },
+                        grid: { display: false }
+                    },
+                    y: {
+                        title: { display: true, text: 'Percentage (%)', font: { size: 12 } },
+                        ticks: {
+                            callback: v => v + '%',
+                            font: { size: 11 }
+                        },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    }
+                }
             }
         });
 
     } catch (error) {
         console.error('Error ambil data:', error);
+        // Kalau error, tampilkan pesan di canvas area
+        document.querySelector('.chart-wrapper').innerHTML =
+            '<p style="color:red;text-align:center">Gagal memuat data. Cek koneksi atau CORS.</p>';
     }
 }
 
-// jalankan
 loadChart();
