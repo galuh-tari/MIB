@@ -152,81 +152,130 @@ window.nextPage = function () { if (currentPage < totalPages) { currentPage++; u
 
 
 async function loadChart() {
-  try {
-    const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
-    const result = await response.json();
-    const rawData = result.data;
+    try {
+        const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all');
+        const result = await response.json();
+        const rawData = result.data;
 
-    // Baca nama faskes dari atribut di <body data-facilities="...">
-    const facilityNames = document.body.dataset.facilities.split('|');
+        const facilityNames = document.body.dataset.facilities.split('|');
 
-    // Filter data sesuai faskes yang ada di halaman ini
-    const cityData = rawData.filter(item =>
-      facilityNames.some(name => item.city.includes(name))
-    );
+        const cityData = rawData.filter(item =>
+            facilityNames.some(name => item.city.includes(name))
+        );
 
-    console.log('City data:', cityData); // cek di Console, harus muncul 2 faskes
+        console.log('City data:', cityData);
 
-    // Kalau tidak ketemu, fallback ke semua data
-    const baseData = cityData.length > 0 ? cityData : rawData;
-    //                ^^^^^^^^^ nama variabel sudah konsisten
+        const baseData = cityData.length > 0 ? cityData : rawData;
+        const cleanedData = baseData.map(i => ({
+            city: i.city,
+            FAPH30: i["FAPH 30"],
+            FAPH7: i["FAPH 7"]
+        }));
 
-    function buatChart(canvasId, data, kpiKey, label) {
-      const canvas = document.getElementById(canvasId);
-      if (!canvas) return;
+        function buatChart(canvasId, data, kpiKey, label) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
 
-      const labels = data.map(item => item.city);
-      const values = data.map(item => item[kpiKey]);
+            const labels = data.map(item => item.city);
+            const values = data.map(item => item[kpiKey]);
 
-      new Chart(canvas, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: label,
-            data: values,
-            backgroundColor: 'rgba(108, 39, 217, 0.85)',
-            borderRadius: 4,
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => ` ${label}: ${ctx.raw}%`
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { maxRotation: 20, minRotation: 0, font: { size: 11 } },
-              grid: { display: false }
-            },
-            y: {
-              title: { display: true, text: 'Percentage (%)', font: { size: 12 } },
-              ticks: { callback: v => v + '%', font: { size: 11 } },
-              grid: { color: 'rgba(0,0,0,0.05)' }
-            }
-          }
+            new Chart(canvas, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: values,
+                        backgroundColor: 'rgba(108, 39, 217, 0.85)',
+                        borderRadius: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => ` ${label}: ${ctx.raw}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { maxRotation: 20, minRotation: 0, font: { size: 11 } },
+                            grid: { display: false }
+                        },
+                        y: {
+                            title: { display: true, text: 'Percentage (%)', font: { size: 12 } },
+                            ticks: { callback: v => v + '%', font: { size: 11 } },
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        }
+                    }
+                }
+            });
         }
-      });
+
+        // Render 4 chart
+        buatChart('smd-chart', baseData, 'SMD', 'SMD Rate');
+        // buatChart('faph-chart',    baseData.filter(i => i.FAPH > 0),     'FAPH',    'FAPH-30 Rate');
+        // SESUDAH — grouped bar chart FAPH-30 dan FAPH-7:
+        const faphData = cleanedData.filter(i => i.FAPH30 > 0 || i.FAPH7 > 0);
+        const faphCanvas = document.getElementById('faph-chart');
+        if (faphCanvas) {
+            new Chart(faphCanvas, {
+                type: 'bar',
+                data: {
+                    labels: faphData.map(i => i.city),  // nama faskes di sumbu X
+                    datasets: [
+                        {
+                            label: 'FAPH30',
+                            data: faphData.map(i => i.FAPH),
+                            backgroundColor: 'rgba(108, 39, 217, 0.85)',  // ungu solid
+                            borderRadius: 4,
+                        },
+                        {
+                            label: 'FAPH7',
+                            data: faphData.map(i => i.FAPH7),  // ← sesuaikan nama field dengan API
+                            backgroundColor: 'rgba(168, 99, 255, 0.6)',   // ungu muda
+                            borderRadius: 4,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { maxRotation: 20, minRotation: 0, font: { size: 11 } },
+                            grid: { display: false }
+                        },
+                        y: {
+                            title: { display: true, text: 'Percentage (%)', font: { size: 12 } },
+                            ticks: { callback: v => v + '%', font: { size: 11 } },
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        }
+                    }
+                }
+            });
+        }
+        buatChart('medcont-chart', baseData.filter(i => i.MedCont > 0), 'MedCont', 'MedCont Rate');
+        buatChart('readm-chart', baseData.filter(i => i.READM > 0), 'READM', 'Readmission Rate');
+
+    } catch (error) {
+        console.error('Error:', error);
+        document.querySelectorAll('.chart-wrapper').forEach(el => {
+            el.innerHTML = '<p style="color:red;text-align:center;padding:2rem">Gagal memuat data.</p>';
+        });
     }
-
-    // Render 4 chart
-    buatChart('smd-chart',     baseData,                              'SMD',     'SMD Rate');
-    buatChart('faph-chart',    baseData.filter(i => i.FAPH > 0),     'FAPH',    'FAPH-30 Rate');
-    buatChart('medcont-chart', baseData.filter(i => i.MedCont > 0),  'MedCont', 'MedCont Rate');
-    buatChart('readm-chart',   baseData.filter(i => i.READM > 0),    'READM',   'Readmission Rate');
-
-  } catch (error) {
-    console.error('Error:', error);
-    document.querySelectorAll('.chart-wrapper').forEach(el => {
-      el.innerHTML = '<p style="color:red;text-align:center;padding:2rem">Gagal memuat data.</p>';
-    });
-  }
 }
 
 loadChart();
