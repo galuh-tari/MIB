@@ -1,186 +1,3 @@
- <!-- <<<<<<< HEAD -->
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="stylesheet.css">
-    <link href="https://fonts.googleapis.com" rel="stylesheet">
-    <title>ALBANY Health Metrics</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500&display=swap"
-        rel="stylesheet" />
-
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-
-</head>
-
-<body>
-
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="close-modal" onclick="closeModal()"><i data-lucide="x"></i></button>
-            <h3 id="modalTitle" style="font-family:'Poppins'; color:var(--purple); margin-bottom:16px;">Detail
-                Information</h3>
-            <div class="modal-body" id="modalBody"></div>
-        </div>
-    </div>
-    <div class="navbar-wrap">
-        <div class="navbar">
-            <a class="navbar-logo" href="#">Health Metrics</a>
-            <div class="navbar-right">
-                <a class="nav-link" href="dashboard.html">Home</a>
-                <a class="nav-link" href="https://data.cms.gov/provider-data/dataset/q9vs-r7wp#data-table"
-                    target="_blank">Dataset</a>
-                <div class="search-wrap">
-                    <i data-lucide="search" style="width:14px"></i>
-                    <input type="text" placeholder="Search bar" />
-                </div>
-                <div class="avatar-btn" onclick="toggleDropdown()" id="avatar-wrap">
-                    <i data-lucide="user"></i>
-                    <div class="dropdown" id="dropdown-menu">
-                        <div class="dropdown-email" id="dropdown-email">Loading...</div>
-                        <div class="dropdown-item" onclick="handleLogout()">Logout</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-city-cover">
-        <div class="city-left">
-            <h1 class="cityname">ALBANY</h1>
-            <p>
-                A Healthcare Data Analyst accesses the system to monitor and evaluate hospital performance across the
-                state using key performance indicators (KPIs), enabling data-driven decision making and quality
-                improvement.
-            </p>
-
-            <div class="hospital-list">
-                <li><img src="asset/albany-medical-center.png" class="albany-medical-center"
-                        alt="albany-medical-center"></li>
-                <li><img src="asset/capital-district.jpg" class="capital-district-psych" alt="capital-district-psych">
-                </li>
-            </div>
-        </div>
-
-    </div>
-    <div class="city-right">
-        <img src="asset/maps.png">
-    </div>
-
-    <div class="content-smd">
-        <div class="smd-card">
-            <h2>SMD</h2>
-        </div>
-        <p>
-            Screening for metabolic disorders measures the percentage of patients discharged from an inpatient
-            psychiatric facility with a prescription for one or more routinely scheduled antipsychotic medications for
-            whom a structured screening for metabolic indicators was completed during their stay or in the 12 months
-            prior to discharge.
-        </p>
-
-        <div class="chart-container">
-            <div class="chart-wrapper">
-                <canvas id="smd-chart"></canvas>
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="content-faph">
-        <div class="faph-card">
-            <h2>FAPH</h2>
-        </div>
-        <p>
-            <b>FAPH-30:</b>Follow-up after psychiatric hospitalization (30 days) measures the percentage of inpatient
-            psychiatric facility hospitalizations for treatment of select mental health or substance use disorders that
-            were followed by an outpatient mental health care or substance use disorder encounter within 30 days of
-            discharge.
-        </p>
-
-        <p>
-
-            <b>FAPH-7:</b>>Follow-up after psychiatric hospitalization (7 days) measures the same population as FAPH-30
-            but
-            tracks whether an outpatient mental health or substance use encounter occurred within the first 7 days after
-            discharge, reflecting a stricter and more clinically critical window. An outpatient visit with a mental
-            health practitioner after discharge is recommended to ensure that the patient's transition to the home or
-            work environment is supported and that gains made during hospitalization are not lost, and it also helps
-            providers detect early post-hospitalization reactions or medication problems.
-        </p>
-
-
-
-        <div class="chart-container">
-            <div class="chart-wrapper">
-                <canvas id="smd-chart"></canvas>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="content-medcont">
-        <div class="medcont-card">
-            <h2>MedCont</h2>
-        </div>
-        <p>
-            Medication continuation measures the percentage of psychiatric patients admitted to an inpatient psychiatric
-            facility for major depressive disorder, schizophrenia, or bipolar disorder who filled a prescription for an
-            evidence-based medication within 2 days prior to discharge through 30 days post-discharge. PubMed Central
-            staying on medication after leaving the hospital is essential because guidelines from the American
-            Psychiatric Association emphasize the importance of treatment adherence and uninterrupted medication
-            regimens to prevent symptoms and relapse.
-        </p>
-
-        <div class="chart-container">
-            <div class="chart-wrapper">
-                <canvas id="smd-chart"></canvas>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="content-readm">
-        <div class="readm-card">
-            <h2>READM</h2>
-        </div>
-        <p>
-            30-Day Readmission Rate Measures the percentage of patients who were readmitted to any acute care hospital
-            within 30 days of discharge from a psychiatric facility. The measure is risk-standardized, meaning each
-            facility's rate accounts for differences in patient population, and each facility's result is compared
-            against the national rate and evaluated as better than, no different than, or worse than the national rate.
-        </p>
-
-        <div class="chart-container">
-            <div class="chart-wrapper">
-                <canvas id="smd-chart"></canvas>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="footer-section">
-        <div class="footer-logo">Health Metrics</div>
-        <div class="footer-right">
-            <a href="https://data.cms.gov/provider-data/dataset/q9vs-r7wp#data-table" target="_blank"
-                class="footer-source">Source: Dataset</a>
-            <a href="#" class="footer-source" onclick="openIPFQR()">IPFQR Program</a>
-        </div>
-    </div>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
-
-</body>
-
-=======
 <!DOCTYPE html>
 <html lang="en">
 
@@ -197,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 
-<body>
+<body data-facilities="ALBANY MEDICAL CENTER HOSPITAL|CAPITAL DISTRICT PSYCH CENTER">
 
     <!-- MODAL -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
@@ -243,9 +60,9 @@
             </p>
 
             <div class="hospital-list">
-                <li><img src="asset/albany-medical-center.png" class="albany-medical-center"
-                        alt="albany-medical-center"></li>
-                <li><img src="asset/capital-district.jpg" class="capital-district-psych" alt="capital-district-psych">
+                <li><img src="asset/albany-medical-center.png" class="albany-medical-center" alt="albany medical center">
+                </li>
+                <li><img src="asset/capital-district-psych.jpg" class="capital-district-psych" alt="capital district psych">
                 </li>
             </div>
         </div>
@@ -272,7 +89,6 @@
             </div>
 
         </div>
-
     </div>
 
     <div class="content-faph">
@@ -280,15 +96,13 @@
             <h2>FAPH</h2>
         </div>
         <p>
-            <b>FAPH-30:</b>Follow-up after psychiatric hospitalization (30 days) measures the percentage of inpatient
+            <b>FAPH-30:</b> Follow-up after psychiatric hospitalization (30 days) measures the percentage of inpatient
             psychiatric facility hospitalizations for treatment of select mental health or substance use disorders that
             were followed by an outpatient mental health care or substance use disorder encounter within 30 days of
             discharge.
         </p>
-
         <p>
-
-            <b>FAPH-7:</b>Follow-up after psychiatric hospitalization (7 days) measures the same population as FAPH-30
+            <B>FAPH-7:</B> Follow-up after psychiatric hospitalization (7 days) measures the same population as FAPH-30
             but
             tracks whether an outpatient mental health or substance use encounter occurred within the first 7 days after
             discharge, reflecting a stricter and more clinically critical window. An outpatient visit with a mental
@@ -297,13 +111,10 @@
             providers detect early post-hospitalization reactions or medication problems.
         </p>
 
-
-
         <div class="chart-container">
             <div class="chart-wrapper">
-                <canvas id="smd-chart"></canvas>
+                <canvas id="faph-chart"></canvas>
             </div>
-
         </div>
     </div>
 
@@ -322,9 +133,8 @@
 
         <div class="chart-container">
             <div class="chart-wrapper">
-                <canvas id="smd-chart"></canvas>
+                <canvas id="medcont-chart"></canvas>
             </div>
-
         </div>
     </div>
 
@@ -341,9 +151,8 @@
 
         <div class="chart-container">
             <div class="chart-wrapper">
-                <canvas id="smd-chart"></canvas>
+                <canvas id="readm-chart"></canvas>
             </div>
-
         </div>
     </div>
 
@@ -353,13 +162,14 @@
         <div class="footer-right">
             <a href="https://data.cms.gov/provider-data/dataset/q9vs-r7wp#data-table" target="_blank"
                 class="footer-source">Source: Dataset</a>
-            <a href="#" class="footer-source" id="ipfqr-link">IPFQR Program</a>
+            <a href="#https://www.cms.gov/medicare/quality/initiatives/hospital-quality-initiative/inpatient-psychiatric-facility-quality-reporting-ipfqr-program"
+                class="footer-source" id="ipfqr-link">IPFQR Program</a>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script type="module" src="script.js"></script>
+
     <!-- SCRIPT DROPDOWN LANGSUNG DI HTML -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
@@ -388,9 +198,10 @@
             }
         });
 
+        // Dropdown
         const avatarBtn = document.getElementById('avatar-wrap');
         const dropdown = document.getElementById('dropdown-menu');
-        
+
         avatarBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             dropdown.classList.toggle('open');
@@ -400,17 +211,19 @@
             dropdown.classList.remove('open');
         });
 
+        // Logout
         document.getElementById('logout-btn').addEventListener('click', async () => {
             await signOut(auth);
             window.location.href = 'index.html';
         });
 
+        // Modal
         const modalOverlay = document.getElementById('modalOverlay');
         const modalTitle = document.getElementById('modalTitle');
         const modalBody = document.getElementById('modalBody');
-        
+
         window.closeModal = () => modalOverlay.classList.remove('active');
-        
+
         document.getElementById('ipfqr-link').addEventListener('click', (e) => {
             e.preventDefault();
             modalTitle.innerText = 'About IPFQR Program';
@@ -425,5 +238,4 @@
 
 </body>
 
->>>>>>> 83c4a9884f84cd8fe752ee93b5d58758738ce42d
 </html>
