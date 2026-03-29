@@ -72,30 +72,52 @@
       </div>
     </div>
 
-    <!-- CHART 1: City-Level KPIs + Benchmark -->
+    <!-- CHART 1: City-Level KPIs + Benchmark (BAR CHART) -->
     <div class="chart-header-section"><h3>City-Level KPIs + Benchmark</h3></div>
     <div class="chart-container">
       <div class="chart-controls">
-        <div class="kpi-filter"><label>Filter by KPI:</label><select id="kpiSelect" onchange="changeKPI()"><option value="ALL">All</option><option value="SMD">SMD</option><option value="FAPH30">FAPH 30</option><option value="FAPH7">FAPH 7</option><option value="MedCont">MedCont</option><option value="READM">READM</option></select></div>
-        <div class="ny-avg-badge" id="nyAvgDisplay">NY State Avg: 13.5</div>
+        <div class="kpi-filter"><label>Filter by KPI:</label><select id="kpiSelect" onchange="changeKPI()"><option value="ALL">All</option><option value="SMD">SMD</option><option value="FAPH30">FAPH 30</option><option value="FAPH7">FAPH 7</option><option value="MedCont">MedCont</option></select></div>
+        <div class="ny-avg-badge" id="nyAvgDisplay">NY State Avg: --</div>
       </div>
       <div class="chart-wrapper"><canvas id="cityChart" style="width:100%; height:400px;"></canvas></div>
       <div class="chart-navigation"><button class="nav-btn" id="prevBtn" onclick="previousPage()"><i data-lucide="chevron-left" style="width:18px"></i></button><span class="page-indicator" id="pageIndicator">Page 1 / 6</span><button class="nav-btn" id="nextBtn" onclick="nextPage()"><i data-lucide="chevron-right" style="width:18px"></i></button></div>
     </div>
 
-    <!-- CHART 2 & 3: Rankings Highest and Lowest -->
+    <!-- MEASUREMENT PERIOD CARDS -->
+    <div class="mp-cards-section" id="mpCardsSection">
+      <div class="mp-cards-grid" id="mpCardsGrid">
+        <div class="mp-card mp-card-loading"><div class="mp-card-inner"><span class="mp-skeleton"></span></div></div>
+        <div class="mp-card mp-card-loading"><div class="mp-card-inner"><span class="mp-skeleton"></span></div></div>
+        <div class="mp-card mp-card-loading"><div class="mp-card-inner"><span class="mp-skeleton"></span></div></div>
+        <div class="mp-card mp-card-loading"><div class="mp-card-inner"><span class="mp-skeleton"></span></div></div>
+        <div class="mp-card mp-card-loading"><div class="mp-card-inner"><span class="mp-skeleton"></span></div></div>
+      </div>
+    </div>
+
+    <!-- READM DISTRIBUTION PIE CHART -->
+    <div class="readm-distribution-container">
+      <div class="readm-header">
+        <h3>Readmission Rate Distribution in New York State</h3>
+      </div>
+      <div class="readm-pie-wrapper">
+        <canvas id="readmPieChart" width="400" height="400"></canvas>
+      </div>
+      <div class="readm-legend" id="readmLengend"></div>
+    </div>
+
+    <!-- Rankings Highest and Lowest -->
     <div class="rankings-row">
       <div>
         <div class="chart-header-section" style="margin-top:0"><h3>City-Level KPI's (Rankings for 10 highest cities/towns)</h3></div>
         <div class="chart-container">
-          <div class="chart-controls"><div class="kpi-filter"><label>Filter by KPI:</label><select id="kpiSelectHighest" onchange="updateHighestChart()"><option value="ALL">All</option><option value="SMD">SMD</option><option value="FAPH30">FAPH 30</option><option value="FAPH7">FAPH 7</option><option value="MedCont">MedCont</option><option value="READM">READM</option></select></div><div class="ny-avg-badge" id="nyAvgHighestDisplay">NY State Avg: 13.5</div></div>
+          <div class="chart-controls"><div class="kpi-filter"><label>Filter by KPI:</label><select id="kpiSelectHighest" onchange="updateHighestChart()"><option value="ALL">All</option><option value="SMD">SMD</option><option value="FAPH30">FAPH 30</option><option value="FAPH7">FAPH 7</option><option value="MedCont">MedCont</option></select></div><div class="ny-avg-badge" id="nyAvgHighestDisplay">NY State Avg: --</div></div>
           <div class="chart-wrapper"><canvas id="highestChart" style="width:100%; height:400px;"></canvas></div>
         </div>
       </div>
       <div>
         <div class="chart-header-section" style="margin-top:0"><h3>City-Level KPI's (Rankings for 10 lowest cities/towns)</h3></div>
         <div class="chart-container">
-          <div class="chart-controls"><div class="kpi-filter"><label>Filter by KPI:</label><select id="kpiSelectLowest" onchange="updateLowestChart()"><option value="ALL">All</option><option value="SMD">SMD</option><option value="FAPH30">FAPH 30</option><option value="FAPH7">FAPH 7</option><option value="MedCont">MedCont</option><option value="READM">READM</option></select></div><div class="ny-avg-badge" id="nyAvgLowestDisplay">NY State Avg: 13.5</div></div>
+          <div class="chart-controls"><div class="kpi-filter"><label>Filter by KPI:</label><select id="kpiSelectLowest" onchange="updateLowestChart()"><option value="ALL">All</option><option value="SMD">SMD</option><option value="FAPH30">FAPH 30</option><option value="FAPH7">FAPH 7</option><option value="MedCont">MedCont</option></select></div><div class="ny-avg-badge" id="nyAvgLowestDisplay">NY State Avg: --</div></div>
           <div class="chart-wrapper"><canvas id="lowestChart" style="width:100%; height:400px;"></canvas></div>
         </div>
       </div>
