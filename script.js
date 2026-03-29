@@ -16,16 +16,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// ===== API CONFIG =====
+// Pakai URL yang sama dengan temanmu — CORS-nya sudah OK
+const API_BASE_URL = "https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net";
+const API_KEY = "PASSWORDAPI";
+
 // ===== AUTHENTICATION =====
 onAuthStateChanged(auth, (user) => {
     if (user) {
         const dropdownEmail = document.getElementById('dropdown-email');
         if (dropdownEmail) dropdownEmail.textContent = user.email;
     } else {
-        const path = window.location.pathname;
-        if (!path.includes('index.html') && !path.includes('dashboard.html')) {
-            window.location.href = 'index.html';
-        }
+        window.location.href = 'index.html';
     }
 });
 
@@ -34,9 +36,24 @@ window.handleLogout = async function () {
     window.location.href = 'index.html';
 };
 
+// ===== DROPDOWN AVATAR =====
 window.toggleDropdown = function () {
     const dropdown = document.getElementById('dropdown-menu');
     if (dropdown) dropdown.classList.toggle('open');
+};
+
+document.addEventListener('click', function (e) {
+    const avatarWrap = document.getElementById('avatar-wrap');
+    const dropdown = document.getElementById('dropdown-menu');
+    if (avatarWrap && dropdown && !avatarWrap.contains(e.target)) {
+        dropdown.classList.remove('open');
+    }
+});
+
+// ===== MODAL =====
+window.closeModal = function () {
+    const modalOverlay = document.getElementById('modalOverlay');
+    if (modalOverlay) modalOverlay.classList.remove('active');
 };
 
 window.openIPFQR = function () {
@@ -52,11 +69,7 @@ window.openIPFQR = function () {
     if (modalOverlay) modalOverlay.classList.add('active');
 };
 
-window.closeModal = function () {
-    const modalOverlay = document.getElementById('modalOverlay');
-    if (modalOverlay) modalOverlay.classList.remove('active');
-};
-
+// ===== LUCIDE ICONS =====
 function initLucideIcons() {
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
@@ -65,83 +78,18 @@ function initLucideIcons() {
     }
 }
 
-document.addEventListener('click', function (e) {
-    const avatarWrap = document.getElementById('avatar-wrap');
-    const dropdown = document.getElementById('dropdown-menu');
-    if (avatarWrap && dropdown && !avatarWrap.contains(e.target)) {
-        dropdown.classList.remove('open');
-    }
-
-    const selectContainer = document.getElementById('citySelect');
-    if (selectContainer && !selectContainer.contains(e.target)) {
-        const selectItems = document.getElementById('selectItems');
-        const selectSelected = document.querySelector('.select-selected');
-        if (selectItems) selectItems.classList.remove('show');
-        if (selectSelected) selectSelected.classList.remove('active');
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    initLucideIcons();
-});
-
-// ===== CHART DASHBOARD (untuk halaman dashboard.html) =====
-let currentPage = 1, citiesPerPage = 10, totalPages = Math.ceil(57 / citiesPerPage), chart1, currentKPI = 'ALL';
-
-function updateChart1() {
-    const start = (currentPage - 1) * citiesPerPage, end = start + citiesPerPage;
-    const labels = allCityNames.slice(start, end), data = getDataForKPI(currentKPI).slice(start, end), nyAvg = getNYAvgValue(currentKPI);
-
-    document.getElementById('nyAvgDisplay').innerHTML = `NY State Avg: ${nyAvg}`;
-    document.getElementById('pageIndicator').innerHTML = `Page ${currentPage} / ${totalPages}`;
-    document.getElementById('prevBtn').disabled = currentPage === 1;
-    document.getElementById('nextBtn').disabled = currentPage === totalPages;
-
-    if (chart1) chart1.destroy();
-
-    const ctx = document.getElementById('cityChart').getContext('2d');
-    chart1 = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels,
-            datasets: [
-                { label: currentKPI === 'ALL' ? 'Average of All KPIs' : currentKPI, data: data.map(v => parseFloat(v)), backgroundColor: 'rgba(108,39,217,0.7)', borderColor: '#6C27D9', borderWidth: 2, borderRadius: 6 },
-                { label: 'NY State Benchmark', data: Array(labels.length).fill(parseFloat(nyAvg)), type: 'line', borderColor: '#FF6B6B', borderWidth: 3, borderDash: [8, 6], fill: false, pointRadius: 0 }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
-                tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}%` } }
-            },
-            scales: {
-                y: { title: { display: true, text: 'Percentage (%)', font: { size: 12 } }, min: 0, max: 50, ticks: { stepSize: 5, callback: (v) => v + '%', font: { size: 11 } } },
-                x: { ticks: { maxRotation: 0, minRotation: 0, font: { size: 11 } } }
-            }
-        }
-    });
-
-    setTimeout(() => { if (typeof lucide !== 'undefined') lucide.createIcons(); }, 100);
-}
-
-window.changeKPI = function () { currentKPI = document.getElementById('kpiSelect').value; currentPage = 1; updateChart1(); };
-window.previousPage = function () { if (currentPage > 1) { currentPage--; updateChart1(); } };
-window.nextPage = function () { if (currentPage < totalPages) { currentPage++; updateChart1(); } };
-
-// ===== LOAD CHART KPI PER CITY (untuk halaman city seperti amityville.html) =====
+// ===== LOAD CHART =====
 async function loadChart() {
     try {
-        const response = await fetch('https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net/api/kpi/all', {
+        const response = await fetch(`${API_BASE_URL}/api/kpi/all`, {
             method: 'GET',
             headers: {
-                'X-API-KEY': 'PASSWORDAPI',
+                'X-API-KEY': API_KEY,
                 'Content-Type': 'application/json'
             }
         });
 
-        if (!response.ok) throw new Error(`Gagal memuat data: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
         const result = await response.json();
         const groupedData = result.data;
@@ -152,21 +100,20 @@ async function loadChart() {
         Object.keys(groupedData).forEach(cityKey => {
             groupedData[cityKey].forEach(facility => {
                 rawDataArray.push({
-                    city: facility.facility, // nama faskes untuk label chart
-                    cityKey: cityKey,        // nama kota untuk filter
-                    SMD:     facility.SMD,
-                    FAPH30:  facility["FAPH 30"],
-                    FAPH7:   facility["FAPH 7"],
-                    MedCont: facility.MedCont,
-                    READM:   facility.READM
+                    city:    facility.facility,
+                    cityKey: cityKey,
+                    SMD:     facility.SMD        || 0,
+                    FAPH30:  facility['FAPH 30'] || 0,
+                    FAPH7:   facility['FAPH 7']  || 0,
+                    MedCont: facility.MedCont    || 0,
+                    READM:   facility.READM      || 0
                 });
             });
         });
 
-        console.log('Contoh data:', rawDataArray[0]); // cek struktur di Console
+        console.log('Contoh data:', rawDataArray[0]);
 
-        // Filter berdasarkan data-facilities di <body>
-        // Contoh: <body data-facilities="BRUNSWICK|SOUTH OAKS">
+        // Baca kata kunci dari <body data-facilities="AUBURN">
         const facilityNames = document.body.dataset.facilities
             ? document.body.dataset.facilities.split('|')
             : [];
@@ -179,24 +126,20 @@ async function loadChart() {
         );
 
         const baseData = filteredData.length > 0 ? filteredData : rawDataArray;
+        console.log('Data kota ini:', baseData);
 
-        console.log('Data kota ini:', baseData); // harus muncul faskes kota ini saja
-
-        // ===== FUNGSI HELPER: buat 1 bar chart =====
+        // Helper: buat 1 bar chart
         function buatChart(canvasId, data, kpiKey, label) {
             const canvas = document.getElementById(canvasId);
             if (!canvas) return;
 
-            const labels = data.map(item => item.city);
-            const values = data.map(item => item[kpiKey] === 0 ? null : item[kpiKey]);
-
             new Chart(canvas, {
                 type: 'bar',
                 data: {
-                    labels,
+                    labels: data.map(i => i.city),
                     datasets: [{
                         label,
-                        data: values,
+                        data: data.map(i => i[kpiKey] === 0 ? null : i[kpiKey]),
                         backgroundColor: 'rgba(108, 39, 217, 0.85)',
                         borderRadius: 4,
                     }]
@@ -241,7 +184,7 @@ async function loadChart() {
             });
         }
 
-        // ===== FUNGSI KHUSUS: FAPH grouped bar (FAPH-30 + FAPH-7) =====
+        // Khusus FAPH: grouped bar (FAPH-30 + FAPH-7)
         function renderFAPHChart(data) {
             const canvas = document.getElementById('faph-chart');
             if (!canvas) return;
@@ -281,48 +224,29 @@ async function loadChart() {
                         }
                     },
                     scales: {
-                        x: { ticks: { maxRotation: 20, minRotation: 0, font: { size: 11 } }, grid: { display: false } },
-                        y: { title: { display: true, text: 'Percentage (%)', font: { size: 12 } }, ticks: { callback: v => v + '%', font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
+                        x: { grid: { display: false } },
+                        y: { ticks: { callback: v => v + '%' } }
                     }
-                },
-                plugins: [{
-                    id: 'naLabel',
-                    afterDatasetsDraw(chart) {
-                        const { ctx } = chart;
-                        chart.data.datasets.forEach((dataset, datasetIndex) => {
-                            const meta = chart.getDatasetMeta(datasetIndex);
-                            meta.data.forEach((bar, index) => {
-                                if (dataset.data[index] === null) {
-                                    ctx.save();
-                                    ctx.fillStyle = 'gray';
-                                    ctx.font = '10px sans-serif';
-                                    ctx.textAlign = 'center';
-                                    ctx.fillText('N/A', bar.x, chart.scales.y.getPixelForValue(2));
-                                    ctx.restore();
-                                }
-                            });
-                        });
-                    }
-                }]
+                }
             });
         }
 
-        // ===== RENDER SEMUA CHART =====
+        // Render semua chart
         buatChart('smd-chart',     baseData.filter(i => i.SMD > 0),     'SMD',     'SMD Rate');
         buatChart('medcont-chart', baseData.filter(i => i.MedCont > 0), 'MedCont', 'MedCont Rate');
         buatChart('readm-chart',   baseData.filter(i => i.READM > 0),   'READM',   'Readmission Rate');
         renderFAPHChart(baseData);
 
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error loadChart:', error);
         document.querySelectorAll('.chart-wrapper').forEach(el => {
             el.innerHTML = `<p style="color:red;text-align:center;padding:2rem">Gagal memuat data: ${error.message}</p>`;
         });
     }
 }
 
-// Jalankan loadChart hanya jika halaman ini adalah halaman city
-// (ditandai dengan adanya atribut data-facilities di <body>)
-if (document.body.dataset.facilities !== undefined) {
+// ===== JALANKAN SAAT HALAMAN SIAP =====
+document.addEventListener('DOMContentLoaded', function () {
+    initLucideIcons();
     loadChart();
-}
+});
