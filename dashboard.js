@@ -774,11 +774,11 @@ window.selectCityOption = function(cityName) {
 
 window.goToCityPage = function() {
   if (selectedCity) {
-    window.location.href = `${selectedCity.toLowerCase()}.html`;
+    window.location.href = `${selectedCity.toLowerCase().replace(/ /g, '')}.html`;
   }
 };
 
-// ===== HEALTHCARE FACILITIES PAGINATION =====
+// ===== HEALTHCARE FACILITIES =====
 let healthcareCurrentPage = 1;
 const healthcarePerPage = 8;
 const healthcareTotalPages = Math.ceil(healthcareFacilities.length / healthcarePerPage);
