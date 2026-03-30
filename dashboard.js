@@ -135,7 +135,7 @@ const healthcareFacilities = [
   { name: "NORTH SHORE UNIVERSITY HOSPITAL", city: "MANHASSET", address: "MANHASSET, NY", website: "https://www.northwell.edu/find-care/locations/north-shore-university-hospital", image: "north.jfif" },
   { name: "GARNET HEALTH MEDICAL CENTER", city: "MIDDLETOWN", address: "MIDDLETOWN, NY", website: "https://www.garnethealth.org/", image: "garr.jfif" },
   { name: "NORTHERN WESTCHESTER HOSPITAL", city: "MOUNT KISCO", address: "MOUNT KISCO, NY", website: "https://www.northwell.edu/find-care/locations/northern-westchester-hospital", image: "west.jfif" },
-  { name: "MONTEFIORE MOUNT VERNON HOSPITAL", city: "MOUNT VERNON", address: "MOUNT VERNON, NY", website: "https://www.montefiorehealthsystem.org/mount-vernon.html", image: "vernon.jfif" },
+  { name: "MONTEFIORE MOUNT VERNON HOSPITAL", city: "MOUNT VERNON", address: "MOUNT VERNON, NY", website: "https://www.montefiorехealthsystem.org/mount-vernon.html", image: "vernon.jfif" },
   { name: "MID HUDSON FORENSIC PSYCHIATRIC CTR", city: "NEW HAMPTON", address: "NEW HAMPTON, NY", website: "https://omh.ny.gov/omhweb/facilities/mhpc/", image: "forensic.jfif" },
   { name: "LONG ISLAND JEWISH MEDICAL CENTER", city: "NEW HYDE PARK", address: "NEW HYDE PARK, NY", website: "https://www.northwell.edu/find-care/locations/long-island-jewish-medical-center", image: "long.jfif" },
   { name: "MOUNT SINAI HOSPITAL", city: "NEW YORK", address: "NEW YORK, NY", website: "https://www.mountsinai.org/", image: "mount.jfif" },
@@ -202,12 +202,29 @@ let measurementPeriods = {};
 let readmDistributionData = null;
 let readmPieChart = null;
 
+// ===== MANUAL FALLBACK DATA =====
+const FALLBACK_AVERAGES = {
+  'SMD': 85.29,
+  'FAPH 30': 64.05,
+  'FAPH 7': 45.47,
+  'MedCont': 82.81,
+  'READM': 18.5
+};
+
+const FALLBACK_MEASUREMENT_PERIODS = {
+  smd:     { label: "SMD",     range: "2024-01-01 to 2024-12-31", note: "Annual" },
+  faph:    { label: "FAPH",    range: "2023-07-01 to 2024-06-30", note: "Annual" },
+  medcont: { label: "MedCont", range: "2022-07-01 to 2024-06-30", note: "Annual" },
+  readm:   { label: "READM",   range: "2022-07-01 to 2024-06-30", note: "Annual" }
+};
+
+const FALLBACK_SOURCE = "CMS.gov Healthcare Data";
+
 // ===== RENDER MEASUREMENT PERIOD CARDS =====
 function renderMpCards(averages, periods, source) {
   const grid = document.getElementById('mpCardsGrid');
   if (!grid) return;
 
-  // Config per KPI: avgKey sesuai key dari API, periodKey sesuai metadata, warna aksen
   const kpiConfigs = [
     { avgKey: 'SMD',     periodKey: 'smd',     label: 'SMD',     color: '#6C27D9' },
     { avgKey: 'FAPH 30', periodKey: 'faph',    label: 'FAPH 30', color: '#8B3EE6' },
@@ -216,7 +233,6 @@ function renderMpCards(averages, periods, source) {
     { avgKey: 'READM',   periodKey: 'readm',   label: 'READM',   color: '#5B21B6' }
   ];
 
-  // Format "2024-01-01 to 2024-12-31" → "Jan 2024 – Dec 2024"
   function fmtRange(range) {
     if (!range) return '--';
     const parts = range.split(' to ');
@@ -229,7 +245,6 @@ function renderMpCards(averages, periods, source) {
     return `${fmtDate(parts[0])} – ${fmtDate(parts[1])}`;
   }
 
-  // Ambil tanggal akhir range sebagai "Last Recorded"
   function lastRecorded(range) {
     if (!range) return '--';
     const parts = range.split(' to ');
@@ -265,7 +280,6 @@ function renderMpCards(averages, periods, source) {
 }
 
 // ===== FETCH READM DISTRIBUTION =====
-// DIPERBAIKI: Hapus referensi readmSubtitle yang tidak ada di HTML
 async function fetchReadmDistribution() {
   try {
     const response = await fetch(`${API_BASE_URL}/api/readm-distribution`, {
@@ -279,27 +293,20 @@ async function fetchReadmDistribution() {
         return;
       }
     }
-    // Fallback mock data
-    const mockData = [
-      { category: "Better Than the National Rate", count: 36, percentage: 2.5, color: "#2ecc71" },
-      { category: "Same as the National Rate", count: 1107, percentage: 77.8, color: "#f1c40f" },
-      { category: "Worse Than the National Rate", count: 76, percentage: 5.3, color: "#e74c3c" },
-      { category: "Not Available", count: 79, percentage: 5.6, color: "#95a5a6" },
-      { category: "Cases Too Small", count: 124, percentage: 8.7, color: "#bdc3c7" }
-    ];
-    createReadmPieChart(mockData);
+    createReadmPieChart(FALLBACK_READM_DISTRIBUTION);
   } catch (error) {
     console.error("Error fetching READM distribution:", error);
-    const mockData = [
-      { category: "Better Than the National Rate", count: 36, percentage: 2.5, color: "#2ecc71" },
-      { category: "Same as the National Rate", count: 1107, percentage: 77.8, color: "#f1c40f" },
-      { category: "Worse Than the National Rate", count: 76, percentage: 5.3, color: "#e74c3c" },
-      { category: "Not Available", count: 79, percentage: 5.6, color: "#95a5a6" },
-      { category: "Cases Too Small", count: 124, percentage: 8.7, color: "#bdc3c7" }
-    ];
-    createReadmPieChart(mockData);
+    createReadmPieChart(FALLBACK_READM_DISTRIBUTION);
   }
 }
+
+const FALLBACK_READM_DISTRIBUTION = [
+  { category: "Better Than the National Rate", count: 36,   percentage: 2.5,  color: "#2ecc71" },
+  { category: "Same as the National Rate",     count: 1107, percentage: 77.8, color: "#f1c40f" },
+  { category: "Worse Than the National Rate",  count: 76,   percentage: 5.3,  color: "#e74c3c" },
+  { category: "Not Available",                 count: 79,   percentage: 5.6,  color: "#95a5a6" },
+  { category: "Cases Too Small",               count: 124,  percentage: 8.7,  color: "#bdc3c7" }
+];
 
 function createReadmPieChart(data) {
   const ctx = document.getElementById('readmPieChart');
@@ -362,7 +369,6 @@ function createCustomLegend(data) {
 }
 
 // ===== FETCH ALL DATA FROM BACKEND =====
-// DIPERBAIKI: Urutan fetch — NY Averages → KPI All → refreshAllCharts → READM (terpisah/terakhir)
 async function fetchAllData() {
   try {
     // 1. Fetch NY Averages dari /api/ny-averages
@@ -373,32 +379,25 @@ async function fetchAllData() {
     if (averagesResponse.ok) {
       const averagesData = await averagesResponse.json();
       if (averagesData.success && averagesData.data) {
-        // Save measurement periods
         measurementPeriods = averagesData.data.metadata?.measurement_periods || {};
 
-        // Save NY averages
         const avg = averagesData.data.averages;
         nyAverages.SMD    = avg['SMD']    || 0;
         nyAverages.FAPH30 = avg['FAPH 30'] || 0;
         nyAverages.FAPH7  = avg['FAPH 7']  || 0;
         nyAverages.MedCont = avg['MedCont'] || 0;
 
-        // Render measurement period cards setelah data averages tersedia
         renderMpCards(
           averagesData.data.averages,
           averagesData.data.metadata?.measurement_periods || {},
-          averagesData.data.metadata?.source || 'CMS.gov'
+          averagesData.data.metadata?.source || FALLBACK_SOURCE
         );
       }
     } else {
       console.warn("Could not fetch /api/ny-averages, using fallback");
       nyAverages = { SMD: 85.29, FAPH30: 64.05, FAPH7: 45.47, MedCont: 82.81 };
-      // Render cards dengan fallback data
-      renderMpCards(
-        { 'SMD': 85.29, 'FAPH 30': 64.05, 'FAPH 7': 45.47, 'MedCont': 82.81, 'READM': 18.5 },
-        {},
-        'CMS.gov'
-      );
+      measurementPeriods = FALLBACK_MEASUREMENT_PERIODS;
+      renderMpCards(FALLBACK_AVERAGES, FALLBACK_MEASUREMENT_PERIODS, FALLBACK_SOURCE);
     }
 
     // 2. Fetch KPI per city dari /api/kpi/all
@@ -409,7 +408,6 @@ async function fetchAllData() {
     if (kpiAllResponse.ok) {
       const kpiAllData = await kpiAllResponse.json();
       if (kpiAllData.success && kpiAllData.data) {
-        // Initialize arrays dengan 57 zeros
         for (let i = 0; i < 57; i++) {
           kpiData.SMD[i]    = 0;
           kpiData.FAPH30[i] = 0;
@@ -417,11 +415,9 @@ async function fetchAllData() {
           kpiData.MedCont[i] = 0;
         }
 
-        // Agregasi data per kota dari semua fasilitas
         for (const [city, facilities] of Object.entries(kpiAllData.data)) {
           const cityIndex = allCityNames.findIndex(c => c === city);
           if (cityIndex !== -1 && facilities.length > 0) {
-            // Hitung rata-rata untuk kota ini
             let sumSMD = 0, sumFAPH30 = 0, sumFAPH7 = 0, sumMedCont = 0;
             const count = facilities.length;
 
@@ -440,7 +436,6 @@ async function fetchAllData() {
         }
       }
     } else {
-      // Fallback mock data jika /api/kpi/all gagal
       console.warn("Could not fetch /api/kpi/all, using mock data");
       for (let i = 0; i < 57; i++) {
         kpiData.SMD[i]    = parseFloat((Math.random() * 30 + 70).toFixed(1));
@@ -450,15 +445,14 @@ async function fetchAllData() {
       }
     }
 
-    // 3. Render semua chart utama setelah NY Averages + KPI All selesai
+    // 3. Render semua chart utama
     refreshAllCharts();
 
-    // 4. Fetch READM distribution terpisah — tidak memblokir chart utama
+    // 4. Fetch READM distribution terpisah
     await fetchReadmDistribution();
 
   } catch (error) {
     console.error("Error fetching data:", error);
-    // Fallback mock data jika semua fetch gagal
     for (let i = 0; i < 57; i++) {
       kpiData.SMD[i]    = parseFloat((Math.random() * 30 + 70).toFixed(1));
       kpiData.FAPH30[i] = parseFloat((Math.random() * 30 + 50).toFixed(1));
@@ -466,11 +460,8 @@ async function fetchAllData() {
       kpiData.MedCont[i] = parseFloat((Math.random() * 20 + 70).toFixed(1));
     }
     nyAverages = { SMD: 85.29, FAPH30: 64.05, FAPH7: 45.47, MedCont: 82.81 };
-    renderMpCards(
-      { 'SMD': 85.29, 'FAPH 30': 64.05, 'FAPH 7': 45.47, 'MedCont': 82.81, 'READM': 18.5 },
-      {},
-      'CMS.gov'
-    );
+    measurementPeriods = FALLBACK_MEASUREMENT_PERIODS;
+    renderMpCards(FALLBACK_AVERAGES, FALLBACK_MEASUREMENT_PERIODS, FALLBACK_SOURCE);
     refreshAllCharts();
     await fetchReadmDistribution();
   }
@@ -502,7 +493,6 @@ function getNYAvgValue(kpi) {
   return nyAverages[kpi];
 }
 
-// RANKINGS: sort dari /api/kpi/all yang sudah diagregasi per kota
 function getTop10(kpi) {
   const data = getDataForKPI(kpi).map((v, i) => ({ name: allCityNames[i], value: parseFloat(v) }));
   return data.sort((a, b) => b.value - a.value).slice(0, 10);
@@ -510,7 +500,6 @@ function getTop10(kpi) {
 
 function getBottom10(kpi) {
   const data = getDataForKPI(kpi).map((v, i) => ({ name: allCityNames[i], value: parseFloat(v) }));
-  // Filter kota yang punya data (> 0) agar kota tanpa fasilitas tidak masuk ranking terendah
   return data.filter(d => d.value > 0).sort((a, b) => a.value - b.value).slice(0, 10);
 }
 
@@ -553,7 +542,6 @@ function updateMeasurementPeriodDisplay(kpiKey, containerId = 'cityChart') {
 }
 
 // ===== CHART City Level KPIs + Benchmark =====
-// Menggunakan: /api/kpi/all (bar) + /api/ny-averages (garis benchmark)
 let currentPage = 1, citiesPerPage = 10, totalPages = Math.ceil(57 / citiesPerPage), chart1, currentKPI = 'ALL';
 
 function updateChart1() {
@@ -630,7 +618,6 @@ window.nextPage = function() {
 };
 
 // ===== CHART Rankings 10 Highest =====
-// Menggunakan: /api/kpi/all — sort terbesar ke terkecil, ambil 10 teratas
 let chartHighest, currentKPIHighest = 'ALL';
 
 function updateHighestChart() {
@@ -689,7 +676,6 @@ function updateHighestChart() {
 window.updateHighestChart = updateHighestChart;
 
 // ===== CHART Rankings 10 Lowest =====
-// Menggunakan: /api/kpi/all — sort terkecil ke terbesar, ambil 10 teratas (filter nilai 0)
 let chartLowest, currentKPILowest = 'ALL';
 
 function updateLowestChart() {
@@ -840,7 +826,7 @@ window.nextHealthcarePage = function() {
 // ===== INITIAL RENDER =====
 setTimeout(() => {
   lucide.createIcons();
-  fetchAllData();       // NY Averages → KPI All → refreshAllCharts → READM
+  fetchAllData();
   renderCityOptions();
   renderHealthcareGrid();
 }, 500);
