@@ -788,7 +788,7 @@ window.selectCityOption = function(cityName) {
 
 window.goToCityPage = function() {
   if (selectedCity) {
-    window.location.href = `${selectedCity.toLowerCase()}.html`;
+    window.location.href = `${selectedCity.toLowerCase().replace(/ /g, '')}.html`;
   }
 };
 
