@@ -559,6 +559,16 @@ function updateChart1() {
   if (chart1) chart1.destroy();
 
   const ctx = document.getElementById('cityChart').getContext('2d');
+  
+  // Force canvas to have proper dimensions
+  const canvas = document.getElementById('cityChart');
+  const container = canvas.parentElement;
+  const containerWidth = container.clientWidth;
+  canvas.style.width = `${containerWidth}px`;
+  canvas.style.height = '400px';
+  canvas.width = containerWidth;
+  canvas.height = 400;
+  
   chart1 = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -586,7 +596,8 @@ function updateChart1() {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
+      resizeDelay: 100,
       plugins: {
         legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
         tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}%` } }
@@ -630,6 +641,16 @@ function updateHighestChart() {
   if (chartHighest) chartHighest.destroy();
 
   const ctx = document.getElementById('highestChart').getContext('2d');
+  
+  // Force canvas to have proper dimensions
+  const canvas = document.getElementById('highestChart');
+  const container = canvas.parentElement;
+  const containerWidth = container.clientWidth;
+  canvas.style.width = `${containerWidth}px`;
+  canvas.style.height = '400px';
+  canvas.width = containerWidth;
+  canvas.height = 400;
+  
   chartHighest = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -657,7 +678,8 @@ function updateHighestChart() {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
+      resizeDelay: 100,
       plugins: {
         legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
         tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}%` } }
@@ -688,6 +710,16 @@ function updateLowestChart() {
   if (chartLowest) chartLowest.destroy();
 
   const ctx = document.getElementById('lowestChart').getContext('2d');
+  
+  // Force canvas to have proper dimensions
+  const canvas = document.getElementById('lowestChart');
+  const container = canvas.parentElement;
+  const containerWidth = container.clientWidth;
+  canvas.style.width = `${containerWidth}px`;
+  canvas.style.height = '400px';
+  canvas.width = containerWidth;
+  canvas.height = 400;
+  
   chartLowest = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -715,7 +747,8 @@ function updateLowestChart() {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
+      resizeDelay: 100,
       plugins: {
         legend: { position: 'top', labels: { boxWidth: 15, padding: 15 } },
         tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}%` } }
@@ -830,3 +863,13 @@ setTimeout(() => {
   renderCityOptions();
   renderHealthcareGrid();
 }, 500);
+
+// Add window resize handler to ensure charts maintain aspect ratio
+window.addEventListener('resize', function() {
+  setTimeout(() => {
+    if (chart1) chart1.resize();
+    if (chartHighest) chartHighest.resize();
+    if (chartLowest) chartLowest.resize();
+    if (readmPieChart) readmPieChart.resize();
+  }, 100);
+});
