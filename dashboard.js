@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
-// ===== FIREBASE CONFIG =====
+// FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyB4aNTSgU5wLoarKUGduLnpbwS9gI13PU4",
   authDomain: "manajemen-informasi-biomedis.firebaseapp.com",
@@ -15,11 +15,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// ===== API BASE URL =====
-const API_BASE_URL = "https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net";
+// API BASE URL
+const API_BASE_URL = "https://newyork-ipfqr-apf4dxd6h6f2hnac.southeastasia-01.azurewebsites.net";
 const API_KEY = "PASSWORDAPI";
 
-// ===== AUTHENTICATION =====
+// AUTHENTICATION
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const name = user.email.split('@')[0];
@@ -51,7 +51,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// ===== MODAL IPFQR =====
+// MODAL IPFQR
 window.closeModal = function() {
   document.getElementById('modalOverlay').classList.remove('active');
 };
@@ -67,7 +67,7 @@ window.openIPFQR = function() {
   document.getElementById('modalOverlay').classList.add('active');
 };
 
-// ===== FLIP CARD =====
+// FLIP CARD
 window.toggleFlip = function(card) {
   const allCards = document.querySelectorAll('.flip-card');
   if (card.classList.contains('flipped')) {
@@ -78,7 +78,7 @@ window.toggleFlip = function(card) {
   }
 };
 
-// ===== DATA 57 CITY =====
+// DATA 57 CITY
 const allCityNames = [
   "ALBANY", "AMITYVILLE", "AMSTERDAM", "AUBURN", "BELLEROSE", "BINGHAMTON", "BRONX", "BROOKLYN",
   "BUFFALO", "CARMEL", "CLIFTON SPRINGS", "CORTLAND", "DIX HILLS", "EAST MEADOW", "ELMHURST",
@@ -90,7 +90,7 @@ const allCityNames = [
   "WARSAW", "WEST BRENTWOOD", "WEST SENECA", "YONKERS"
 ];
 
-// ===== DATA 95 FACILITY =====
+// DATA 95 FACILITY
 const healthcareFacilities = [
   { name: "ALBANY MEDICAL CENTER HOSPITAL", city: "ALBANY", address: "ALBANY, NY", website: "https://www.albanymed.org/", image: "albany.jfif" },
   { name: "CAPITAL DISTRICT PSYCH CENTER", city: "ALBANY", address: "ALBANY, NY", website: "https://omh.ny.gov/omhweb/facilities/cdpc/", image: "albany2.jfif" },
@@ -189,7 +189,7 @@ const healthcareFacilities = [
   { name: "ST JOSEPH'S MEDICAL CENTER", city: "YONKERS", address: "YONKERS, NY", website: "https://www.saintjosephs.org/", image: "yonkers.jfif" }
 ];
 
-// ===== DATA DARI BACKEND =====
+// DATA DARI BACKEND
 let kpiData = {
   SMD: [],
   FAPH30: [],
@@ -202,25 +202,13 @@ let measurementPeriods = {};
 let readmDistributionData = null;
 let readmPieChart = null;
 
-// ===== MANUAL FALLBACK DATA =====
-const FALLBACK_AVERAGES = {
-  'SMD': 85.29,
-  'FAPH 30': 64.05,
-  'FAPH 7': 45.47,
-  'MedCont': 82.81,
-  'READM': 18.5
-};
+// ERROR HELPER
+function showDataError(msg) {
+  const grid = document.getElementById('mpCardsGrid');
+  if (grid) grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:24px;color:#e53e3e;font-weight:600;">${msg}</div>`;
+}
 
-const FALLBACK_MEASUREMENT_PERIODS = {
-  smd:     { label: "SMD",     range: "2024-01-01 to 2024-12-31", note: "Annual" },
-  faph:    { label: "FAPH",    range: "2023-07-01 to 2024-06-30", note: "Annual" },
-  medcont: { label: "MedCont", range: "2022-07-01 to 2024-06-30", note: "Annual" },
-  readm:   { label: "READM",   range: "2022-07-01 to 2024-06-30", note: "Annual" }
-};
-
-const FALLBACK_SOURCE = "CMS.gov Healthcare Data";
-
-// ===== RENDER MEASUREMENT PERIOD CARDS =====
+// RENDER MEASUREMENT PERIOD CARDS
 function renderMpCards(averages, periods, source) {
   const grid = document.getElementById('mpCardsGrid');
   if (!grid) return;
@@ -279,7 +267,7 @@ function renderMpCards(averages, periods, source) {
   }).join('');
 }
 
-// ===== FETCH READM DISTRIBUTION =====
+// FETCH READM DISTRIBUTION
 async function fetchReadmDistribution() {
   try {
     const response = await fetch(`${API_BASE_URL}/api/readm-distribution`, {
@@ -293,20 +281,11 @@ async function fetchReadmDistribution() {
         return;
       }
     }
-    createReadmPieChart(FALLBACK_READM_DISTRIBUTION);
+    console.warn("Could not fetch READM distribution data.");
   } catch (error) {
     console.error("Error fetching READM distribution:", error);
-    createReadmPieChart(FALLBACK_READM_DISTRIBUTION);
   }
 }
-
-const FALLBACK_READM_DISTRIBUTION = [
-  { category: "Better Than the National Rate", count: 36,   percentage: 2.5,  color: "#2ecc71" },
-  { category: "Same as the National Rate",     count: 1107, percentage: 77.8, color: "#f1c40f" },
-  { category: "Worse Than the National Rate",  count: 76,   percentage: 5.3,  color: "#e74c3c" },
-  { category: "Not Available",                 count: 79,   percentage: 5.6,  color: "#95a5a6" },
-  { category: "Cases Too Small",               count: 124,  percentage: 8.7,  color: "#bdc3c7" }
-];
 
 function createReadmPieChart(data) {
   const ctx = document.getElementById('readmPieChart');
@@ -368,7 +347,7 @@ function createCustomLegend(data) {
   `).join('');
 }
 
-// ===== FETCH ALL DATA FROM BACKEND =====
+// FETCH ALL DATA FROM BACKEND
 async function fetchAllData() {
   try {
     // 1. Fetch NY Averages dari /api/ny-averages
@@ -390,14 +369,12 @@ async function fetchAllData() {
         renderMpCards(
           averagesData.data.averages,
           averagesData.data.metadata?.measurement_periods || {},
-          averagesData.data.metadata?.source || FALLBACK_SOURCE
+          averagesData.data.metadata?.source || 'CMS.gov'
         );
       }
     } else {
-      console.warn("Could not fetch /api/ny-averages, using fallback");
-      nyAverages = { SMD: 85.29, FAPH30: 64.05, FAPH7: 45.47, MedCont: 82.81 };
-      measurementPeriods = FALLBACK_MEASUREMENT_PERIODS;
-      renderMpCards(FALLBACK_AVERAGES, FALLBACK_MEASUREMENT_PERIODS, FALLBACK_SOURCE);
+      console.warn("Could not fetch /api/ny-averages");
+      showDataError("Gagal memuat data rata-rata. Silakan refresh halaman.");
     }
 
     // 2. Fetch KPI per city dari /api/kpi/all
@@ -436,13 +413,7 @@ async function fetchAllData() {
         }
       }
     } else {
-      console.warn("Could not fetch /api/kpi/all, using mock data");
-      for (let i = 0; i < 57; i++) {
-        kpiData.SMD[i]    = parseFloat((Math.random() * 30 + 70).toFixed(1));
-        kpiData.FAPH30[i] = parseFloat((Math.random() * 30 + 50).toFixed(1));
-        kpiData.FAPH7[i]  = parseFloat((Math.random() * 30 + 30).toFixed(1));
-        kpiData.MedCont[i] = parseFloat((Math.random() * 20 + 70).toFixed(1));
-      }
+      console.warn("Could not fetch /api/kpi/all");
     }
 
     // 3. Render semua chart utama
@@ -453,17 +424,7 @@ async function fetchAllData() {
 
   } catch (error) {
     console.error("Error fetching data:", error);
-    for (let i = 0; i < 57; i++) {
-      kpiData.SMD[i]    = parseFloat((Math.random() * 30 + 70).toFixed(1));
-      kpiData.FAPH30[i] = parseFloat((Math.random() * 30 + 50).toFixed(1));
-      kpiData.FAPH7[i]  = parseFloat((Math.random() * 30 + 30).toFixed(1));
-      kpiData.MedCont[i] = parseFloat((Math.random() * 20 + 70).toFixed(1));
-    }
-    nyAverages = { SMD: 85.29, FAPH30: 64.05, FAPH7: 45.47, MedCont: 82.81 };
-    measurementPeriods = FALLBACK_MEASUREMENT_PERIODS;
-    renderMpCards(FALLBACK_AVERAGES, FALLBACK_MEASUREMENT_PERIODS, FALLBACK_SOURCE);
-    refreshAllCharts();
-    await fetchReadmDistribution();
+    showDataError("Gagal memuat data. Silakan refresh halaman.");
   }
 }
 
@@ -503,7 +464,7 @@ function getBottom10(kpi) {
   return data.filter(d => d.value > 0).sort((a, b) => a.value - b.value).slice(0, 10);
 }
 
-// ===== MEASUREMENT PERIOD DISPLAY =====
+// MEASUREMENT PERIOD DISPLAY
 let currentDisplayedKpi = 'ALL';
 
 function updateMeasurementPeriodDisplay(kpiKey, containerId = 'cityChart') {
@@ -541,7 +502,7 @@ function updateMeasurementPeriodDisplay(kpiKey, containerId = 'cityChart') {
   }
 }
 
-// ===== CHART City Level KPIs + Benchmark =====
+// CHART City Level KPIs + Benchmark
 let currentPage = 1, citiesPerPage = 10, totalPages = Math.ceil(57 / citiesPerPage), chart1, currentKPI = 'ALL';
 
 function updateChart1() {
@@ -560,7 +521,6 @@ function updateChart1() {
 
   const ctx = document.getElementById('cityChart').getContext('2d');
   
-  // Force canvas to have proper dimensions
   const canvas = document.getElementById('cityChart');
   const container = canvas.parentElement;
   const containerWidth = container.clientWidth;
@@ -628,7 +588,7 @@ window.nextPage = function() {
   if (currentPage < totalPages) { currentPage++; updateChart1(); }
 };
 
-// ===== CHART Rankings 10 Highest =====
+// CHART Rankings 10 Highest
 let chartHighest, currentKPIHighest = 'ALL';
 
 function updateHighestChart() {
@@ -642,7 +602,6 @@ function updateHighestChart() {
 
   const ctx = document.getElementById('highestChart').getContext('2d');
   
-  // Force canvas to have proper dimensions
   const canvas = document.getElementById('highestChart');
   const container = canvas.parentElement;
   const containerWidth = container.clientWidth;
@@ -697,7 +656,7 @@ function updateHighestChart() {
 
 window.updateHighestChart = updateHighestChart;
 
-// ===== CHART Rankings 10 Lowest =====
+// CHART Rankings 10 Lowest
 let chartLowest, currentKPILowest = 'ALL';
 
 function updateLowestChart() {
@@ -711,7 +670,6 @@ function updateLowestChart() {
 
   const ctx = document.getElementById('lowestChart').getContext('2d');
   
-  // Force canvas to have proper dimensions
   const canvas = document.getElementById('lowestChart');
   const container = canvas.parentElement;
   const containerWidth = container.clientWidth;
@@ -766,7 +724,7 @@ function updateLowestChart() {
 
 window.updateLowestChart = updateLowestChart;
 
-// ===== SPECIFIC CITY FUNCTIONS =====
+// SPECIFIC CITY FUNCTIONS
 let selectedCity = null;
 let cityOptions = [...allCityNames];
 
@@ -811,7 +769,7 @@ window.goToCityPage = function() {
   }
 };
 
-// ===== HEALTHCARE FACILITIES =====
+// HEALTHCARE FACILITIES
 let healthcareCurrentPage = 1;
 const healthcarePerPage = 8;
 const healthcareTotalPages = Math.ceil(healthcareFacilities.length / healthcarePerPage);
@@ -856,7 +814,7 @@ window.nextHealthcarePage = function() {
   if (healthcareCurrentPage < healthcareTotalPages) { healthcareCurrentPage++; renderHealthcareGrid(); }
 };
 
-// ===== INITIAL RENDER =====
+// INITIAL RENDER
 setTimeout(() => {
   lucide.createIcons();
   fetchAllData();
