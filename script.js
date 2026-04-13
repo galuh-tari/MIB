@@ -218,7 +218,7 @@ function renderCharts(data) {
     function renderFAPHChart(chartData) {
         const canvas = document.getElementById('faph-chart');
         if (!canvas) return;
-        const faphData = chartData.filter(i => i.FAPH30 > 0 || i.FAPH7 > 0);
+        const faphData = chartData;
         new Chart(canvas, {
             type: 'bar',
             data: {
