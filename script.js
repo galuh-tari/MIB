@@ -236,9 +236,9 @@ function renderCharts(data) {
         });
     }
 
-    buatChart('smd-chart',     data.filter(i => i.SMD > 0),     'SMD',     'SMD Rate');
-    buatChart('medcont-chart', data.filter(i => i.MedCont > 0), 'MedCont', 'MedCont Rate');
-    buatChart('readm-chart',   data.filter(i => i.READM > 0),   'READM',   'Readmission Rate');
+    buatChart('smd-chart',     data,     'SMD',     'SMD Rate');
+    buatChart('medcont-chart', data, 'MedCont', 'MedCont Rate');
+    buatChart('readm-chart',   data,   'READM',   'Readmission Rate');
     renderFAPHChart(data);
 }
 
@@ -288,10 +288,6 @@ async function loadChart() {
         renderCharts(baseData);
 
     } catch (error) {
-        // API gagal → pakai data asli dari SQLite (hardcoded di FALLBACK_DATA)
-        // console.warn('API tidak tersedia, pakai fallback data:', error.message);
-        // const baseData = filterData(FALLBACK_DATA);
-        // console.log('Data fallback:', baseData);
         renderCharts(baseData);
     }
 }
