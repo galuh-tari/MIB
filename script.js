@@ -114,7 +114,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 // const API_BASE_URL = "https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net";
-const API_BASE_URL = "https://newyork-ipfqr-apf4dxd6h6f2hnac.southeastasia-01.azurewebsites.net";
+// const API_BASE_URL = "https://newyork-ipfqr-apf4dxd6h6f2hnac.southeastasia-01.azurewebsites.net";
+const API_BASE_URL = "https://newyork-ipfqr-apf4dxd6h6f2hnac.southeastasia-01.azurewebsites.net/api/kpi/all";
 
 const API_KEY = "PASSWORDAPI";
 
