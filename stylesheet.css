@@ -53,7 +53,7 @@ html, body {
 /* RESPONSIVE */
 @media (max-width: 600px) {
     .navbar {
-        flex-direction: column;
+        flex-direction: row;
         align-items: flex-start;
         gap: 10px;
     }
