@@ -284,7 +284,7 @@ async function loadChart() {
         });
 
         const baseData = filterData(rawDataArray);
-        console.log('Data dari API:', baseData);
+        // console.log('Data dari API:', baseData);
         renderCharts(baseData);
 
     } catch (error) {
