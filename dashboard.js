@@ -270,14 +270,14 @@ function renderMpCards(averages, periods, source) {
 // FETCH READM DISTRIBUTION
 async function fetchReadmDistribution() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/readm-distribution`, {
+    const response = await fetch(`${API_BASE_URL}/api/ny-readm-analysis`, {
       headers: { 'X-API-KEY': API_KEY }
     });
     if (response.ok) {
       const data = await response.json();
-      if (data.success && data.data) {
+      if (data.success && data.pie_chart_data) {
         readmDistributionData = data;
-        createReadmPieChart(data.data);
+        createReadmPieChart(data.pie_chart_data);
         return;
       }
     }
@@ -290,15 +290,15 @@ async function fetchReadmDistribution() {
 function createReadmPieChart(data) {
   const ctx = document.getElementById('readmPieChart');
   if (!ctx) return;
-  
+
   const filteredData = data.filter(item => item.percentage > 0);
-  const labels = filteredData.map(item => item.category);
+  const labels = filteredData.map(item => item.name);
   const percentages = filteredData.map(item => item.percentage);
   const colors = filteredData.map(item => item.color);
-  const counts = filteredData.map(item => item.count);
-  
+  const counts = filteredData.map(item => item.y);
+
   if (readmPieChart) readmPieChart.destroy();
-  
+
   readmPieChart = new Chart(ctx, {
     type: 'pie',
     data: {
@@ -330,18 +330,18 @@ function createReadmPieChart(data) {
       }
     }
   });
-  
+
   createCustomLegend(filteredData);
 }
 
 function createCustomLegend(data) {
   const legendContainer = document.getElementById('readmLengend');
   if (!legendContainer) return;
-  
+
   legendContainer.innerHTML = data.map(item => `
     <div class="legend-item">
       <div class="legend-color" style="background-color: ${item.color}"></div>
-      <span class="legend-text">${item.category}</span>
+      <span class="legend-text">${item.name}</span>
       <span class="legend-percent">(${item.percentage}%)</span>
     </div>
   `).join('');
@@ -520,7 +520,7 @@ function updateChart1() {
   if (chart1) chart1.destroy();
 
   const ctx = document.getElementById('cityChart').getContext('2d');
-  
+
   const canvas = document.getElementById('cityChart');
   const container = canvas.parentElement;
   const containerWidth = container.clientWidth;
@@ -528,7 +528,7 @@ function updateChart1() {
   canvas.style.height = '400px';
   canvas.width = containerWidth;
   canvas.height = 400;
-  
+
   chart1 = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -601,7 +601,7 @@ function updateHighestChart() {
   if (chartHighest) chartHighest.destroy();
 
   const ctx = document.getElementById('highestChart').getContext('2d');
-  
+
   const canvas = document.getElementById('highestChart');
   const container = canvas.parentElement;
   const containerWidth = container.clientWidth;
@@ -609,7 +609,7 @@ function updateHighestChart() {
   canvas.style.height = '400px';
   canvas.width = containerWidth;
   canvas.height = 400;
-  
+
   chartHighest = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -669,7 +669,7 @@ function updateLowestChart() {
   if (chartLowest) chartLowest.destroy();
 
   const ctx = document.getElementById('lowestChart').getContext('2d');
-  
+
   const canvas = document.getElementById('lowestChart');
   const container = canvas.parentElement;
   const containerWidth = container.clientWidth;
@@ -677,7 +677,7 @@ function updateLowestChart() {
   canvas.style.height = '400px';
   canvas.width = containerWidth;
   canvas.height = 400;
-  
+
   chartLowest = new Chart(ctx, {
     type: 'bar',
     data: {
