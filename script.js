@@ -115,7 +115,7 @@ const auth = getAuth(app);
 
 // const API_BASE_URL = "https://newyorkipfqr-b7c9gyf9dhakhxcf.indonesiacentral-01.azurewebsites.net";
 // const API_BASE_URL = "https://newyork-ipfqr-apf4dxd6h6f2hnac.southeastasia-01.azurewebsites.net";
-const API_BASE_URL = "https://newyork-ipfqr-apf4dxd6h6f2hnac.southeastasia-01.azurewebsites.net/api/kpi/all";
+const API_BASE_URL = "https://newyork-ipfqr-apf4dxd6h6f2hnac.southeastasia-01.azurewebsites.net";
 
 const API_KEY = "PASSWORDAPI";
 
@@ -291,7 +291,7 @@ async function loadChart() {
         // API gagal → pakai data asli dari SQLite (hardcoded di FALLBACK_DATA)
         console.warn('API tidak tersedia, pakai fallback data:', error.message);
         const baseData = filterData(FALLBACK_DATA);
-        console.log('Data fallback:', baseData);
+        // console.log('Data fallback:', baseData);
         renderCharts(baseData);
     }
 }
