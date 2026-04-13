@@ -107,6 +107,13 @@ html, body {
     overflow-x: auto;
 }
 
+.hospital-logo {
+    height: 45px;       
+    width: auto;       
+    max-width: 200px;   
+    object-fit: contain; 
+}
+
 .city-right img {
     position: absolute;
     right: -250px;
